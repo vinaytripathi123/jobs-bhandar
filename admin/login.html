@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>JobsBhandar - Admin Login</title>
+
+    <!-- Supabase Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .login-card {
+            background: #ffffff;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .logo h1 {
+            font-size: 30px;
+            color: #111827;
+        }
+
+        .logo h1 span {
+            color: #2563eb;
+        }
+
+        .logo p {
+            margin-top: 8px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            color: #374151;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            padding: 11px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .message.error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .message.success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .back-link:hover {
+            color: #2563eb;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <div class="login-card">
+
+            <div class="logo">
+                <h1>Jobs<span>Bhandar</span></h1>
+                <p>Admin Panel Login</p>
+            </div>
+
+            <div id="message" class="message"></div>
+
+            <form id="loginForm">
+
+                <div class="form-group">
+                    <label for="email">Admin Email</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter admin email"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter password"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+
+                <button
+                    type="submit"
+                    id="loginButton"
+                    class="login-btn"
+                >
+                    Login to Dashboard
+                </button>
+
+            </form>
+
+            <a href="../index.html" class="back-link">
+                ← Back to Jobs Bhandar
+            </a>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Supabase configuration
+        const SUPABASE_URL =
+            "https://agakowokmmxdcuuohbds.supabase.co";
+
+        const SUPABASE_PUBLISHABLE_KEY =
+            "sb_publishable_ksiaTdu4oits7sd7s0fZcQ_BP76I1pQ";
+
+        // Create Supabase client directly
+        const client = window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+        );
+
+        const loginForm =
+            document.getElementById("loginForm");
+
+        const loginButton =
+            document.getElementById("loginButton");
+
+        const message =
+            document.getElementById("message");
+
+
+        function showMessage(text, type) {
+
+            message.textContent = text;
+
+            message.className =
+                "message " + type;
+        }
+
+
+        // Check existing login
+        async function checkSession() {
+
+            try {
+
+                const { data, error } =
+                    await client.auth.getSession();
+
+                if (error) {
+                    console.error(error);
+                    return;
+                }
+
+                if (data.session) {
+
+                    window.location.href =
+                        "index.html";
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Session check error:",
+                    error
+                );
+            }
+        }
+
+
+        checkSession();
+
+
+        // Login
+        loginForm.addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+                message.className = "message";
+                message.textContent = "";
+
+                const email =
+                    document.getElementById("email")
+                    .value
+                    .trim();
+
+                const password =
+                    document.getElementById("password")
+                    .value;
+
+                loginButton.disabled = true;
+
+                loginButton.textContent =
+                    "Logging in...";
+
+
+                try {
+
+                    const { data, error } =
+                        await client.auth.signInWithPassword({
+                            email: email,
+                            password: password
+                        });
+
+
+                    if (error) {
+                        throw error;
+                    }
+
+
+                    if (!data.session) {
+
+                        throw new Error(
+                            "Login failed. Session was not created."
+                        );
+                    }
+
+
+                    showMessage(
+                        "Login successful. Opening dashboard...",
+                        "success"
+                    );
+
+
+                    setTimeout(function() {
+
+                        window.location.href =
+                            "index.html";
+
+                    }, 700);
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Login error:",
+                        error
+                    );
+
+                    showMessage(
+                        error.message ||
+                        "Login failed. Please check your email and password.",
+                        "error"
+                    );
+
+                    loginButton.disabled = false;
+
+                    loginButton.textContent =
+                        "Login to Dashboard";
+                }
+
+            }
+        );
+    </script>
+
+</body>
+</html>
