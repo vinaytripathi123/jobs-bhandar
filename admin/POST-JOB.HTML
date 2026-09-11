@@ -1,0 +1,633 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Post Job - Jobs Bhandar</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 850px;
+            margin: 40px auto;
+        }
+
+        .card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #2563eb;
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        button:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        #message {
+            display: none;
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 7px;
+            text-align: center;
+        }
+
+        .success {
+            display: block !important;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .error {
+            display: block !important;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        @media (max-width: 600px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>Post a Job</h1>
+
+        <p class="subtitle">
+            Jobs Bhandar - Add New Job
+        </p>
+
+        <form id="jobForm">
+
+            <div class="form-group">
+                <label for="title">Job Title *</label>
+
+                <input
+                    type="text"
+                    id="title"
+                    placeholder="e.g. Accountant"
+                    required
+                >
+            </div>
+
+
+            <div class="row">
+
+                <div class="form-group">
+                    <label for="company">Company Name *</label>
+
+                    <input
+                        type="text"
+                        id="company"
+                        placeholder="Company name"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="location">Location *</label>
+
+                    <input
+                        type="text"
+                        id="location"
+                        placeholder="e.g. Varanasi, Uttar Pradesh"
+                        required
+                    >
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="form-group">
+
+                    <label for="category">
+                        Category *
+                    </label>
+
+                    <select id="category" required>
+
+                        <option value="">
+                            Select Category
+                        </option>
+
+                        <option value="Accounting">
+                            Accounting
+                        </option>
+
+                        <option value="Banking">
+                            Banking
+                        </option>
+
+                        <option value="IT">
+                            IT
+                        </option>
+
+                        <option value="Sales">
+                            Sales
+                        </option>
+
+                        <option value="Marketing">
+                            Marketing
+                        </option>
+
+                        <option value="HR">
+                            HR
+                        </option>
+
+                        <option value="Government">
+                            Government
+                        </option>
+
+                        <option value="Teaching">
+                            Teaching
+                        </option>
+
+                        <option value="Work From Home">
+                            Work From Home
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="job_type">
+                        Job Type *
+                    </label>
+
+                    <select id="job_type" required>
+
+                        <option value="">
+                            Select Job Type
+                        </option>
+
+                        <option value="Full Time">
+                            Full Time
+                        </option>
+
+                        <option value="Part Time">
+                            Part Time
+                        </option>
+
+                        <option value="Internship">
+                            Internship
+                        </option>
+
+                        <option value="Contract">
+                            Contract
+                        </option>
+
+                        <option value="Work From Home">
+                            Work From Home
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="form-group">
+
+                    <label for="salary">
+                        Salary
+                    </label>
+
+                    <input
+                        type="text"
+                        id="salary"
+                        placeholder="e.g. ₹15,000 - ₹25,000"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="last_date">
+                        Last Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="last_date"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="qualification">
+                    Qualification
+                </label>
+
+                <input
+                    type="text"
+                    id="qualification"
+                    placeholder="e.g. Graduate / 12th Pass"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="description">
+                    Job Description *
+                </label>
+
+                <textarea
+                    id="description"
+                    placeholder="Enter complete job description..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="apply_link">
+                    Apply Link *
+                </label>
+
+                <input
+                    type="url"
+                    id="apply_link"
+                    placeholder="https://example.com/apply"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                id="submitBtn"
+            >
+                Publish Job
+            </button>
+
+        </form>
+
+
+        <div id="message"></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   SUPABASE CONFIG
+   ========================================= */
+
+const SUPABASE_URL =
+    "YOUR_SUPABASE_URL";
+
+const SUPABASE_ANON_KEY =
+    "YOUR_SUPABASE_ANON_KEY";
+
+
+/* =========================================
+   CREATE SUPABASE CLIENT
+   ========================================= */
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
+
+
+/* =========================================
+   ELEMENTS
+   ========================================= */
+
+const jobForm =
+    document.getElementById("jobForm");
+
+const submitBtn =
+    document.getElementById("submitBtn");
+
+const message =
+    document.getElementById("message");
+
+
+/* =========================================
+   SHOW MESSAGE
+   ========================================= */
+
+function showMessage(text, type) {
+
+    message.textContent = text;
+
+    message.className = type;
+
+}
+
+
+/* =========================================
+   FORM SUBMIT
+   ========================================= */
+
+jobForm.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        submitBtn.disabled = true;
+
+        submitBtn.textContent =
+            "Publishing...";
+
+
+        message.className = "";
+
+        message.textContent = "";
+
+
+        /* =====================================
+           GET FORM VALUES
+           ===================================== */
+
+        const title =
+            document.getElementById("title")
+            .value
+            .trim();
+
+
+        const company =
+            document.getElementById("company")
+            .value
+            .trim();
+
+
+        const location =
+            document.getElementById("location")
+            .value
+            .trim();
+
+
+        const category =
+            document.getElementById("category")
+            .value;
+
+
+        const job_type =
+            document.getElementById("job_type")
+            .value;
+
+
+        const salary =
+            document.getElementById("salary")
+            .value
+            .trim();
+
+
+        const last_date =
+            document.getElementById("last_date")
+            .value || null;
+
+
+        const qualification =
+            document.getElementById("qualification")
+            .value
+            .trim();
+
+
+        const description =
+            document.getElementById("description")
+            .value
+            .trim();
+
+
+        const apply_link =
+            document.getElementById("apply_link")
+            .value
+            .trim();
+
+
+        /* =====================================
+           JOB DATA
+           ===================================== */
+
+        const jobData = {
+
+            title: title,
+
+            company: company,
+
+            location: location,
+
+            category: category,
+
+            job_type: job_type,
+
+            salary: salary,
+
+            last_date: last_date,
+
+            qualification: qualification,
+
+            description: description,
+
+            apply_url: apply_link
+
+        };
+
+
+        console.log(
+            "Sending job data:",
+            jobData
+        );
+
+
+        /* =====================================
+           INSERT INTO SUPABASE
+           ===================================== */
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+
+            .from("jobs")
+
+            .insert([jobData])
+
+            .select();
+
+
+        /* =====================================
+           ERROR
+           ===================================== */
+
+        if (error) {
+
+            console.error(
+                "Job Publish Error:",
+                error
+            );
+
+
+            showMessage(
+                "Job publish failed: " +
+                error.message,
+                "error"
+            );
+
+
+            submitBtn.disabled = false;
+
+            submitBtn.textContent =
+                "Publish Job";
+
+            return;
+        }
+
+
+        /* =====================================
+           SUCCESS
+           ===================================== */
+
+        console.log(
+            "Job Published:",
+            data
+        );
+
+
+        showMessage(
+            "✓ Job published successfully!",
+            "success"
+        );
+
+
+        /* Clear form */
+
+        jobForm.reset();
+
+
+        submitBtn.disabled = false;
+
+        submitBtn.textContent =
+            "Publish Job";
+
+    }
+);
+
+</script>
+
+</body>
+</html>
+```
