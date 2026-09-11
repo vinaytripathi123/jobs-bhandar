@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <title>JobsBhandar Admin Dashboard</title>
+
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <!-- =====================================================
+         ADMIN APP
+    ====================================================== -->
+
+    <div class="admin-app">
+
+        <!-- =================================================
+             SIDEBAR
+        ================================================== -->
+
+        <aside class="sidebar" id="sidebar">
+
+            <div class="sidebar-top">
+
+                <a href="../index.html" class="admin-brand">
+
+                    <span class="admin-brand-mark">
+                        JB
+                    </span>
+
+                    <span class="admin-brand-text">
+                        Jobs<span>Bhandar</span>
+                    </span>
+
+                </a>
+
+                <button
+                    class="sidebar-close"
+                    id="sidebarClose"
+                    type="button"
+                    aria-label="Close menu"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <!-- NAVIGATION -->
+
+            <nav class="admin-nav">
+
+                <a
+                    href="#dashboard"
+                    class="nav-item active"
+                    data-page="dashboard"
+                >
+                    <span class="nav-icon">▦</span>
+                    <span>Dashboard</span>
+                </a>
+
+
+                <a
+                    href="#post-job"
+                    class="nav-item"
+                    data-page="post-job"
+                >
+                    <span class="nav-icon">＋</span>
+                    <span>Post New Job</span>
+                </a>
+
+
+                <a
+                    href="#manage-jobs"
+                    class="nav-item"
+                    data-page="manage-jobs"
+                >
+                    <span class="nav-icon">▤</span>
+                    <span>Manage Jobs</span>
+                </a>
+
+
+                <a
+                    href="#drafts"
+                    class="nav-item"
+                    data-page="drafts"
+                >
+                    <span class="nav-icon">◷</span>
+                    <span>Drafts</span>
+                    <span class="nav-count">0</span>
+                </a>
+
+
+                <a
+                    href="#closed-jobs"
+                    class="nav-item"
+                    data-page="closed-jobs"
+                >
+                    <span class="nav-icon">✓</span>
+                    <span>Closed Jobs</span>
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-divider"></div>
+
+
+            <nav class="admin-nav secondary-nav">
+
+                <a
+                    href="#settings"
+                    class="nav-item"
+                    data-page="settings"
+                >
+                    <span class="nav-icon">⚙</span>
+                    <span>Settings</span>
+                </a>
+
+
+                <a
+                    href="../index.html"
+                    class="nav-item"
+                >
+                    <span class="nav-icon">↗</span>
+                    <span>View Website</span>
+                </a>
+
+            </nav>
+
+
+            <!-- ADMIN PROFILE -->
+
+            <div class="admin-profile">
+
+                <div class="profile-avatar">
+                    A
+                </div>
+
+                <div class="profile-info">
+
+                    <strong>Administrator</strong>
+
+                    <span>JobsBhandar Admin</span>
+
+                </div>
+
+                <button
+                    class="logout-button"
+                    type="button"
+                    title="Logout"
+                >
+                    ↪
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =================================================
+             SIDEBAR OVERLAY
+        ================================================== -->
+
+        <div
+            class="sidebar-overlay"
+            id="sidebarOverlay"
+        ></div>
+
+
+        <!-- =================================================
+             MAIN AREA
+        ================================================== -->
+
+        <main class="admin-main">
+
+            <!-- TOP BAR -->
+
+            <header class="admin-header">
+
+                <div class="header-left">
+
+                    <button
+                        class="menu-toggle"
+                        id="menuToggle"
+                        type="button"
+                        aria-label="Open menu"
+                    >
+                        ☰
+                    </button>
+
+
+                    <div class="page-heading">
+
+                        <span class="page-kicker">
+                            JOBSBHANDAR ADMIN
+                        </span>
+
+                        <h1 id="pageTitle">
+                            Dashboard
+                        </h1>
+
+                    </div>
+
+                </div>
+
+
+                <div class="header-actions">
+
+                    <a
+                        href="../index.html"
+                        class="view-site-button"
+                        target="_blank"
+                    >
+                        <span>↗</span>
+                        View Site
+                    </a>
+
+
+                    <button
+                        class="admin-avatar-button"
+                        type="button"
+                        title="Administrator"
+                    >
+                        A
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- =================================================
+                 PAGE CONTENT
+            ================================================== -->
+
+            <div class="admin-content">
+
+
+                <!-- =================================================
+                     DASHBOARD PAGE
+                ================================================== -->
+
+                <section
+                    class="admin-page active"
+                    id="dashboardPage"
+                    data-section="dashboard"
+                >
+
+                    <div class="welcome-row">
+
+                        <div>
+
+                            <span class="section-label">
+                                OVERVIEW
+                            </span>
+
+                            <h2>
+                                Welcome back, Admin 👋
+                            </h2>
+
+                            <p>
+                                Manage your JobsBhandar jobs
+                                from one simple dashboard.
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            class="primary-button"
+                            data-go-page="post-job"
+                            type="button"
+                        >
+                            <span>＋</span>
+                            Post New Job
+                        </button>
+
+                    </div>
+
+
+                    <!-- STAT CARDS -->
+
+                    <div class="stats-grid">
+
+                        <article class="stat-card">
+
+                            <div class="stat-icon blue">
+                                💼
+                            </div>
+
+                            <div class="stat-details">
+
+                                <span>
+                                    Total Jobs
+                                </span>
+
+                                <strong id="totalJobs">
+                                    0
+                                </strong>
+
+                            </div>
+
+                            <span class="stat-note">
+                                All jobs
+                            </span>
+
+                        </article>
+
+
+                        <article class="stat-card">
+
+                            <div class="stat-icon green">
+                                ✓
+                            </div>
+
+                            <div class="stat-details">
+
+                                <span>
+                                    Active Jobs
+                                </span>
+
+                                <strong id="activeJobs">
+                                    0
+                                </strong>
+
+                            </div>
+
+                            <span class="stat-note">
+                                Published
+                            </span>
+
+                        </article>
+
+
+                        <article class="stat-card">
+
+                            <div class="stat-icon orange">
+                                ◷
+                            </div>
+
+                            <div class="stat-details">
+
+                                <span>
+                                    Draft Jobs
+                                </span>
+
+                                <strong id="draftJobs">
+                                    0
+                                </strong>
+
+                            </div>
+
+                            <span class="stat-note">
+                                Not published
+                            </span>
+
+                        </article>
+
+
+                        <article class="stat-card">
+
+                            <div class="stat-icon purple">
+                                ✓
+                            </div>
+
+                            <div class="stat-details">
+
+                                <span>
+                                    Closed Jobs
+                                </span>
+
+                                <strong id="closedJobs">
+                                    0
+                                </strong>
+
+                            </div>
+
+                            <span class="stat-note">
+                                Archived
+                            </span>
+
+                        </article>
+
+                    </div>
+
+
+                    <!-- QUICK ACTIONS -->
+
+                    <section class="dashboard-section">
+
+                        <div class="section-header">
+
+                            <div>
+
+                                <span class="section-label">
+                                    QUICK ACTIONS
+                                </span>
+
+                                <h3>
+                                    What do you want to do?
+                                </h3>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="quick-actions-grid">
+
+                            <button
+                                class="quick-action-card"
+                                data-go-page="post-job"
+                                type="button"
+                            >
+
+                                <span class="quick-icon blue">
+                                    ＋
+                                </span>
+
+                                <span class="quick-text">
+
+                                    <strong>
+                                        Post New Job
+                                    </strong>
+
+                                    <small>
+                                        Add a new opportunity
+                                    </small>
+
+                                </span>
+
+                                <span class="quick-arrow">
+                                    →
+                                </span>
+
+                            </button>
+
+
+                            <button
+                                class="quick-action-card"
+                                data-go-page="manage-jobs"
+                                type="button"
+                            >
+
+                                <span class="quick-icon green">
+                                    ▤
+                                </span>
+
+                                <span class="quick-text">
+
+                                    <strong>
+                                        Manage Jobs
+                                    </strong>
+
+                                    <small>
+                                        Edit or update jobs
+                                    </small>
+
+                                </span>
+
+                                <span class="quick-arrow">
+                                    →
+                                </span>
+
+                            </button>
+
+
+                            <button
+                                class="quick-action-card"
+                                data-go-page="drafts"
+                                type="button"
+                            >
+
+                                <span class="quick-icon orange">
+                                    ◷
+                                </span>
+
+                                <span class="quick-text">
+
+                                    <strong>
+                                        View Drafts
+                                    </strong>
+
+                                    <small>
+                                        Continue unfinished jobs
+                                    </small>
+
+                                </span>
+
+                                <span class="quick-arrow">
+                                    →
+                                </span>
+
+                            </button>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- RECENT JOBS -->
+
+                    <section class="dashboard-section">
+
+                        <div class="section-header">
+
+                            <div>
+
+                                <span class="section-label">
+                                    RECENT ACTIVITY
+                                </span>
+
+                                <h3>
+                                    Recent Jobs
+                                </h3>
+
+                            </div>
+
+
+                            <button
+                                class="text-button"
+                                data-go-page="manage-jobs"
+                                type="button"
+                            >
+                                View All →
+                            </button>
+
+                        </div>
+
+
+                        <div class="table-wrapper">
+
+                            <table class="jobs-table">
+
+                                <thead>
+
+                                    <tr>
+
+                                        <th>
+                                            Job
+                                        </th>
+
+                                        <th>
+                                            Company
+                                        </th>
+
+                                        <th>
+                                            Category
+                                        </th>
+
+                                        <th>
+                                            Status
+                                        </th>
+
+                                        <th>
+                                            Date
+                                        </th>
+
+                                        <th>
+                                            Action
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody id="recentJobsTable">
+
+                                    <tr class="empty-row">
+
+                                        <td colspan="6">
+
+                                            <div class="empty-state">
+
+                                                <span>
+                                                    💼
+                                                </span>
+
+                                                <strong>
+                                                    No jobs yet
+                                                </strong>
+
+                                                <p>
+                                                    Your recently
+                                                    posted jobs will
+                                                    appear here.
+                                                </p>
+
+                                                <button
+                                                    class="small-primary-button"
+                                                    data-go-page="post-job"
+                                                    type="button"
+                                                >
+                                                    Post Your First Job
+                                                </button>
+
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </section>
+
+                </section>
+
+
+                <!-- =================================================
+                     POST JOB PAGE
+                ================================================== -->
+
+                <section
+                    class="admin-page"
+                    id="postJobPage"
+                    data-section="post-job"
+                >
+
+                    <div class="page-intro">
+
+                        <div>
+
+                            <span class="section-label">
+                                CREATE
+                            </span>
+
+                            <h2>
+                                Post New Job
+                            </h2>
+
+                            <p>
+                                Add a new job opportunity
+                                for job seekers.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <form
+                        class="job-form"
+                        id="jobForm"
+                    >
+
+                        <!-- BASIC INFORMATION -->
+
+                        <div class="form-card">
+
+                            <div class="form-card-header">
+
+                                <div class="form-card-icon">
+                                    01
+                                </div>
+
+                                <div>
+
+                                    <h3>
+                                        Basic Information
+                                    </h3>
+
+                                    <p>
+                                        Main details about the job.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-grid">
+
+                                <div class="form-group full">
+
+                                    <label for="jobTitle">
+                                        Job Title
+                                        <span>*</span>
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="jobTitle"
+                                        name="title"
+                                        placeholder="e.g. Business Development Executive"
+                                        required
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="companyName">
+                                        Company Name
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="companyName"
+                                        name="company"
+                                        placeholder="e.g. HCL Technologies"
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="category">
+                                        Category
+                                    </label>
+
+                                    <select
+                                        id="category"
+                                        name="category"
+                                    >
+
+                                        <option value="">
+                                            Select Category
+                                        </option>
+
+                                        <option value="Government">
+                                            Government
+                                        </option>
+
+                                        <option value="Private">
+                                            Private
+                                        </option>
+
+                                        <option value="Internship">
+                                            Internship
+                                        </option>
+
+                                        <option value="Work From Home">
+                                            Work From Home
+                                        </option>
+
+                                        <option value="Banking">
+                                            Banking
+                                        </option>
+
+                                        <option value="IT">
+                                            IT & Software
+                                        </option>
+
+                                        <option value="Finance">
+                                            Finance
+                                        </option>
+
+                                        <option value="Marketing">
+                                            Marketing
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="location">
+                                        Location
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="location"
+                                        name="location"
+                                        placeholder="e.g. Varanasi / Remote"
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="jobType">
+                                        Job Type
+                                    </label>
+
+                                    <select
+                                        id="jobType"
+                                        name="job_type"
+                                    >
+
+                                        <option value="">
+                                            Select Job Type
+                                        </option>
+
+                                        <option value="Full Time">
+                                            Full Time
+                                        </option>
+
+                                        <option value="Part Time">
+                                            Part Time
+                                        </option>
+
+                                        <option value="Internship">
+                                            Internship
+                                        </option>
+
+                                        <option value="Work From Home">
+                                            Work From Home
+                                        </option>
+
+                                        <option value="Contract">
+                                            Contract
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- REQUIREMENTS -->
+
+                        <div class="form-card">
+
+                            <div class="form-card-header">
+
+                                <div class="form-card-icon">
+                                    02
+                                </div>
+
+                                <div>
+
+                                    <h3>
+                                        Requirements
+                                    </h3>
+
+                                    <p>
+                                        Candidate requirements
+                                        and job details.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-grid">
+
+                                <div class="form-group">
+
+                                    <label for="education">
+                                        Education
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="education"
+                                        name="education"
+                                        placeholder="e.g. B.Com / Graduate"
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="experience">
+                                        Experience
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="experience"
+                                        name="experience"
+                                        placeholder="e.g. Fresher / 1-2 Years"
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="salary">
+                                        Salary
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        id="salary"
+                                        name="salary"
+                                        placeholder="e.g. ₹3-5 LPA"
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <label for="lastDate">
+                                        Last Date
+                                    </label>
+
+                                    <input
+                                        type="date"
+                                        id="lastDate"
+                                        name="last_date"
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group full">
+
+                                    <label for="description">
+                                        Job Description
+                                    </label>
+
+                                    <textarea
+                                        id="description"
+                                        name="description"
+                                        rows="8"
+                                        placeholder="Write complete job details, responsibilities, requirements and other important information..."
+                                    ></textarea>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- APPLICATION -->
+
+                        <div class="form-card">
+
+                            <div class="form-card-header">
+
+                                <div class="form-card-icon">
+                                    03
+                                </div>
+
+                                <div>
+
+                                    <h3>
+                                        Application & Publishing
+                                    </h3>
+
+                                    <p>
+                                        Where candidates can apply
+                                        and how the job should appear.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-grid">
+
+                                <div class="form-group full">
+
+                                    <label for="applyUrl">
+                                        Apply Link
+                                    </label>
+
+                                    <input
+                                        type="url"
+                                        id="applyUrl"
+                                        name="apply_url"
+                                        placeholder="https://example.com/apply"
+                                    >
+
+                                </div>
+
+
+                                <div class="form-group full">
+
+                                    <label for="companyLogo">
+                                        Company Logo URL
+                                    </label>
+
+                                    <input
+                                        type="url"
+                                        id="companyLogo"
+                                        name="company_logo"
+                                        placeholder="https://example.com/logo.png"
+                                    >
+
+                                    <small class="field-help">
+                                        Logo upload will be connected
+                                        later with the backend.
+                                    </small>
+
+                                </div>
+
+
+                                <div class="checkbox-group">
+
+                                    <label class="checkbox-label">
+
+                                        <input
+                                            type="checkbox"
+                                            id="featured"
+                                            name="featured"
+                                        >
+
+                                        <span class="custom-checkbox"></span>
+
+                                        <span>
+                                            <strong>
+                                                Featured Job
+                                            </strong>
+
+                                            <small>
+                                                Highlight this job
+                                                on the website.
+                                            </small>
+                                        </span>
+
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- FORM ACTIONS -->
+
+                        <div class="form-actions">
+
+                            <button
+                                type="button"
+                                class="secondary-button"
+                                id="saveDraftButton"
+                            >
+                                Save as Draft
+                            </button>
+
+
+                            <button
+                                type="reset"
+                                class="cancel-button"
+                            >
+                                Clear
+                            </button>
+
+
+                            <button
+                                type="submit"
+                                class="primary-button"
+                            >
+                                Publish Job →
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </section>
+
+
+                <!-- =================================================
+                     MANAGE JOBS
+                ================================================== -->
+
+                <section
+                    class="admin-page"
+                    id="manageJobsPage"
+                    data-section="manage-jobs"
+                >
+
+                    <div class="page-intro">
+
+                        <div>
+
+                            <span class="section-label">
+                                MANAGEMENT
+                            </span>
+
+                            <h2>
+                                Manage Jobs
+                            </h2>
+
+                            <p>
+                                Search, edit, close or delete
+                                your published jobs.
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            class="primary-button"
+                            data-go-page="post-job"
+                            type="button"
+                        >
+                            ＋ Post New Job
+                        </button>
+
+                    </div>
+
+
+                    <div class="manage-toolbar">
+
+                        <div class="search-box">
+
+                            <span>⌕</span>
+
+                            <input
+                                type="search"
+                                id="jobSearch"
+                                placeholder="Search jobs..."
+                            >
+
+                        </div>
+
+
+                        <select
+                            id="statusFilter"
+                            class="filter-select"
+                        >
+
+                            <option value="all">
+                                All Status
+                            </option>
+
+                            <option value="active">
+                                Active
+                            </option>
+
+                            <option value="draft">
+                                Draft
+                            </option>
+
+                            <option value="closed">
+                                Closed
+                            </option>
+
+                        </select>
+
+
+                        <select
+                            id="categoryFilter"
+                            class="filter-select"
+                        >
+
+                            <option value="all">
+                                All Categories
+                            </option>
+
+                            <option value="Government">
+                                Government
+                            </option>
+
+                            <option value="Private">
+                                Private
+                            </option>
+
+                            <option value="Internship">
+                                Internship
+                            </option>
+
+                            <option value="Work From Home">
+                                Work From Home
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="jobs-table manage-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Job
+                                    </th>
+
+                                    <th>
+                                        Company
+                                    </th>
+
+                                    <th>
+                                        Category
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <th>
+                                        Posted
+                                    </th>
+
+                                    <th>
+                                        Actions
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="manageJobsTable">
+
+                                <tr class="empty-row">
+
+                                    <td colspan="6">
+
+                                        <div class="empty-state">
+
+                                            <span>
+                                                📋
+                                            </span>
+
+                                            <strong>
+                                                No jobs available
+                                            </strong>
+
+                                            <p>
+                                                Post your first job
+                                                to start managing
+                                                opportunities.
+                                            </p>
+
+                                            <button
+                                                class="small-primary-button"
+                                                data-go-page="post-job"
+                                                type="button"
+                                            >
+                                                Post New Job
+                                            </button>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     DRAFTS
+                ================================================== -->
+
+                <section
+                    class="admin-page"
+                    id="draftsPage"
+                    data-section="drafts"
+                >
+
+                    <div class="page-intro">
+
+                        <div>
+
+                            <span class="section-label">
+                                UNPUBLISHED
+                            </span>
+
+                            <h2>
+                                Draft Jobs
+                            </h2>
+
+                            <p>
+                                Jobs saved but not published yet.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="empty-large"
+                        id="draftsContainer"
+                    >
+
+                        <div class="empty-state">
+
+                            <span>
+                                ◷
+                            </span>
+
+                            <strong>
+                                No draft jobs
+                            </strong>
+
+                            <p>
+                                Saved drafts will appear here.
+                            </p>
+
+                            <button
+                                class="small-primary-button"
+                                data-go-page="post-job"
+                                type="button"
+                            >
+                                Create Job
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     CLOSED JOBS
+                ================================================== -->
+
+                <section
+                    class="admin-page"
+                    id="closedJobsPage"
+                    data-section="closed-jobs"
+                >
+
+                    <div class="page-intro">
+
+                        <div>
+
+                            <span class="section-label">
+                                ARCHIVE
+                            </span>
+
+                            <h2>
+                                Closed Jobs
+                            </h2>
+
+                            <p>
+                                Jobs that are no longer accepting
+                                applications.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="empty-large"
+                        id="closedJobsContainer"
+                    >
+
+                        <div class="empty-state">
+
+                            <span>
+                                ✓
+                            </span>
+
+                            <strong>
+                                No closed jobs
+                            </strong>
+
+                            <p>
+                                Closed jobs will appear here.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     SETTINGS
+                ================================================== -->
+
+                <section
+                    class="admin-page"
+                    id="settingsPage"
+                    data-section="settings"
+                >
+
+                    <div class="page-intro">
+
+                        <div>
+
+                            <span class="section-label">
+                                ADMINISTRATION
+                            </span>
+
+                            <h2>
+                                Settings
+                            </h2>
+
+                            <p>
+                                Manage your dashboard preferences.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="settings-grid">
+
+                        <div class="settings-card">
+
+                            <div class="settings-icon">
+                                👤
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Admin Profile
+                                </h3>
+
+                                <p>
+                                    Account and administrator
+                                    information.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="settings-card">
+
+                            <div class="settings-icon">
+                                🔐
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Security
+                                </h3>
+
+                                <p>
+                                    Login and access controls
+                                    will be connected later.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="settings-card">
+
+                            <div class="settings-icon">
+                                🌐
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Website
+                                </h3>
+
+                                <p>
+                                    JobsBhandar website settings
+                                    and SEO controls.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <footer class="admin-footer">
+
+                <span>
+                    © 2026 JobsBhandar Admin
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </footer>
+
+        </main>
+
+    </div>
+
+
+    <!-- =====================================================
+         TOAST / NOTIFICATION
+    ====================================================== -->
+
+    <div
+        class="toast"
+        id="toast"
+        role="status"
+        aria-live="polite"
+    >
+        <span class="toast-icon">
+            ✓
+        </span>
+
+        <span id="toastMessage">
+            Done
+        </span>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase-client.js"></script>
+    <script src="admin.js?v=2"></script>
+    
