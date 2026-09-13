@@ -802,7 +802,163 @@
                             currentUrl
                         );
 
+                    /*
+                     * Google JobPosting structured data
+                     */
 
+                    const oldJobSchema =
+                        document.getElementById("jobPostingSchema");
+
+                    if (oldJobSchema) {
+                        oldJobSchema.remove();
+                    }
+
+                    let validThrough = null;
+
+                    if (job.last_date) {
+                        const parsedLastDate =
+                            new Date(job.last_date);
+
+                        if (
+                            !Number.isNaN(
+                                parsedLastDate.getTime()
+                            )
+                        ) {
+                            validThrough =
+                                parsedLastDate.toISOString();
+                        }
+                    }
+
+                    /*
+                     * Do not add JobPosting schema
+                     * if the job has expired.
+                     */
+
+                    const isExpired =
+                        validThrough &&
+                        new Date(validThrough) < new Date();
+
+                    if (!isExpired) {
+
+                        const jobSchema = {
+                            "@context":
+                                "https://schema.org",
+
+                            "@type":
+                                "JobPosting",
+
+                            "title":
+                                title,
+
+                            "description":
+                                description,
+
+                            "datePosted":
+                                job.created_at
+                                    ? new Date(
+                                        job.created_at
+                                    ).toISOString()
+                                    : new Date().toISOString(),
+
+                            "hiringOrganization": {
+                                "@type":
+                                    "Organization",
+
+                                "name":
+                                    company
+                            },
+
+                            "jobLocation": {
+                                "@type":
+                                    "Place",
+
+                                "address": {
+                                    "@type":
+                                        "PostalAddress",
+
+                                    "addressLocality":
+                                        location,
+
+                                    "addressCountry":
+                                        "IN"
+                                }
+                            }
+                        };
+
+                        if (validThrough) {
+                            jobSchema.validThrough =
+                                validThrough;
+                        }
+
+                        const employmentMap = {
+                            "full time":
+                                "FULL_TIME",
+
+                            "full-time":
+                                "FULL_TIME",
+
+                            "part time":
+                                "PART_TIME",
+
+                            "part-time":
+                                "PART_TIME",
+
+                            "contract":
+                                "CONTRACTOR",
+
+                            "contractor":
+                                "CONTRACTOR",
+
+                            "temporary":
+                                "TEMPORARY",
+
+                            "intern":
+                                "INTERN",
+
+                            "internship":
+                                "INTERN",
+
+                            "volunteer":
+                                "VOLUNTEER",
+
+                            "per diem":
+                                "PER_DIEM"
+                        };
+
+                        const jobTypeText =
+                            String(jobType || "")
+                                .trim()
+                                .toLowerCase();
+
+                        if (
+                            employmentMap[jobTypeText]
+                        ) {
+                            jobSchema.employmentType =
+                                employmentMap[
+                                    jobTypeText
+                                ];
+                        }
+
+                        const schemaScript =
+                            document.createElement(
+                                "script"
+                            );
+
+                        schemaScript.type =
+                            "application/ld+json";
+
+                        schemaScript.id =
+                            "jobPostingSchema";
+
+                        schemaScript.textContent =
+                            JSON.stringify(
+                                jobSchema
+                            );
+
+                        document.head.appendChild(
+                            schemaScript
+                        );
+                    }
                     /*
                      * Show page
                      */
