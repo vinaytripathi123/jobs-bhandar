@@ -140,130 +140,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const noResults =
         document.getElementById("noResults");
-       /*
-     * CATEGORY JOB SECTIONS
-     * Government / Private / Internship / Work From Home
-     */
-
-    const categorySections = {
-        government: document.querySelector("#government .jobs-grid"),
-        private: document.querySelector("#private .jobs-grid"),
-        internship: document.querySelector("#internships .jobs-grid"),
-        remote: document.querySelector("#work-from-home .jobs-grid")
-    };
-
-    function showCategoryMessage(container, title, message) {
-        if (!container) return;
-
-        container.innerHTML = `
-            <div class="category-empty-message">
-                <h3>${escapeHtml(title)}</h3>
-                <p>${escapeHtml(message)}</p>
-            </div>
-        `;
-    }
-
-    function renderCategoryJobs(jobs) {
-
-        Object.values(categorySections).forEach(container => {
-            if (container) {
-                container.innerHTML = "";
-            }
-        });
-
-        const categories = {
-            government: [],
-            private: [],
-            internship: [],
-            remote: []
-        };
-
-        jobs.forEach(job => {
-
-            const category =
-                String(job.category || "")
-                    .trim()
-                    .toLowerCase();
-
-            if (category.includes("government")) {
-                categories.government.push(job);
-            }
-
-            else if (category.includes("private")) {
-                categories.private.push(job);
-            }
-
-            else if (category.includes("intern")) {
-                categories.internship.push(job);
-            }
-
-            else if (
-                category.includes("work") ||
-                category.includes("remote")
-            ) {
-                categories.remote.push(job);
-            }
-        });
-
-        const render = (
-            container,
-            jobs,
-            emptyTitle,
-            emptyMessage
-        ) => {
-
-            if (!container) return;
-
-            if (jobs.length === 0) {
-
-                showCategoryMessage(
-                    container,
-                    emptyTitle,
-                    emptyMessage
-                );
-
-                return;
-            }
-
-            jobs.forEach(job => {
-
-                container.appendChild(
-                    createJobCard(job)
-                );
-
-            });
-        };
-
-        render(
-            categorySections.government,
-            categories.government,
-            "No Government Jobs Available",
-            "New government opportunities will be added soon."
-        );
-
-        render(
-            categorySections.private,
-            categories.private,
-            "No Private Jobs Available",
-            "New private sector opportunities will be added soon."
-        );
-
-        render(
-            categorySections.internship,
-            categories.internship,
-            "No Internships Available",
-            "New internship opportunities will be added soon."
-        );
-
-        render(
-            categorySections.remote,
-            categories.remote,
-            "No Work From Home Jobs Available",
-            "New remote opportunities will be added soon."
-        );
-
-        setupRevealObserver();
-    }
 
     if (latestJobs) {
 
@@ -312,9 +188,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                      */
 
                     latestJobs.innerHTML = "";
-                   renderCategoryJobs(data || []);
-            
-
 
                     if (!data || data.length === 0) {
 
@@ -328,7 +201,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                             noResults.hidden = true;
                         }
 
-
                         data.forEach(job => {
 
                             const card =
@@ -339,7 +211,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                             );
 
                         });
-
 
                         /*
                          * Start reveal animation
@@ -420,6 +291,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             "#";
 
 
+        /* =================================================
+           JOB ID
+        ================================================= */
+
+        const jobId =
+            job.id;
+
+
         /*
          * Company logo letters
          */
@@ -498,6 +377,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
         /*
+         * Job Details URL
+         *
+         * Example:
+         * job-details.html?id=123
+         */
+
+        const detailsLink =
+            jobId !== undefined &&
+            jobId !== null
+                ? "job-details.html?id=" +
+                  encodeURIComponent(jobId)
+                : "#";
+
+
+        /*
          * Card HTML
          */
 
@@ -557,14 +451,33 @@ document.addEventListener("DOMContentLoaded", async () => {
                     Last Date: ${escapeHtml(lastDate)}
                 </span>
 
-                <a
-                    class="job-button"
-                    href="${escapeAttribute(applyLink)}"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                <div
+                    class="job-actions"
+                    style="
+                        display:flex;
+                        gap:10px;
+                        align-items:center;
+                        flex-wrap:wrap;
+                    "
                 >
-                    Apply Now
-                </a>
+
+                    <a
+                        class="job-button"
+                        href="${escapeAttribute(detailsLink)}"
+                    >
+                        View Details
+                    </a>
+
+                    <a
+                        class="job-button"
+                        href="${escapeAttribute(applyLink)}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Apply Now
+                    </a>
+
+                </div>
 
             </div>
         `;
@@ -584,7 +497,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const searchInput =
         document.getElementById("jobSearch");
-
 
     if (
         searchForm &&
