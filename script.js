@@ -489,115 +489,130 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
    
-    const footerBottom = /* =====================================================
-       SEARCH
-    ===================================================== */
+    /* =====================================================
+   SEARCH
+===================================================== */
 
-    const searchForm =
-        document.getElementById("searchForm");
+const searchForm =
+    document.getElementById("searchForm");
 
-    const searchInput =
-        document.getElementById("jobSearch");
+const searchInput =
+    document.getElementById("jobSearch");
 
-    if (
-        searchForm &&
-        searchInput &&
-        latestJobs
-    ) {
+let searchSuggestions =
+    document.getElementById("searchSuggestions");
 
-        function performSearch() {
+if (
+    searchForm &&
+    searchInput &&
+    latestJobs
+) {
 
-            const searchValue =
-                searchInput.value
-                    .trim()
-                    .toLowerCase();
+    if (!searchSuggestions) {
 
-            const jobCards =
-                latestJobs.querySelectorAll(
-                    ".job-card"
+        searchSuggestions =
+            document.createElement("div");
+
+        searchSuggestions.id =
+            "searchSuggestions";
+
+        searchSuggestions.className =
+            "rich-search-suggestions";
+
+        searchSuggestions.style.display =
+            "none";
+
+        searchForm.style.position =
+            "relative";
+
+        searchForm.appendChild(
+            searchSuggestions
+        );
+
+    }
+
+
+    function performSearch() {
+
+        const searchValue =
+            searchInput.value
+                .trim()
+                .toLowerCase();
+
+        const jobCards =
+            latestJobs.querySelectorAll(
+                ".job-card"
+            );
+
+        let visibleJobs = 0;
+
+
+        jobCards.forEach(card => {
+
+            const searchableText =
+                (
+                    card.dataset.search ||
+                    card.innerText ||
+                    ""
+                ).toLowerCase();
+
+
+            const matches =
+                searchValue === "" ||
+                searchableText.includes(
+                    searchValue
                 );
 
-            let visibleJobs = 0;
+
+            card.style.display =
+                matches ? "" : "none";
 
 
-            jobCards.forEach(card => {
-
-                const searchableText =
-                    (
-                        card.dataset.search ||
-                        card.innerText ||
-                        ""
-                    ).toLowerCase();
-
-
-                const matches =
-                    searchValue === "" ||
-                    searchableText.includes(
-                        searchValue
-                    );
-
-
-                card.style.display =
-                    matches ? "" : "none";
-
-
-                if (matches) {
-                    visibleJobs++;
-                }
-
-            });
-
-
-            if (noResults) {
-
-                noResults.hidden =
-                    visibleJobs !== 0;
-
+            if (matches) {
+                visibleJobs++;
             }
+
+        });
+
+
+        if (noResults) {
+
+            noResults.hidden =
+                visibleJobs !== 0;
 
         }
 
-
-        searchForm.addEventListener(
-            "submit",
-            event => {
-
-                event.preventDefault();
-
-                performSearch();
-
-                latestJobs.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
-
-            }
-        );
-
-
-        searchInput.addEventListener(
-            "input",
-            performSearch
-        );
-
     }
 
 
-    /* =====================================================
-       CURRENT YEAR
-    ===================================================== */
-   searchInput.addEventListener(
-            "input",
-            performSearch
-        );
+    searchForm.addEventListener(
+        "submit",
+        event => {
 
-    }
+            event.preventDefault();
+
+            performSearch();
+
+            latestJobs.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+    );
 
 
-    /* =====================================================
-       CURRENT YEAR
-    ===================================================== */
+    searchInput.addEventListener(
+        "input",
+        performSearch
+    );
 
+}
+
+
+/* =====================================================
+   CURRENT YEAR
+===================================================== */
        const footerBottom =
         document.querySelector(
             ".footer-bottom"
