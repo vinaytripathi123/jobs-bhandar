@@ -647,5 +647,169 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
 
     }
+    /* =====================================================
+       CATEGORY-WISE JOB LOADING
+       Government / Private / Internship / Work From Home
+    ====================================================== */
 
+    async function loadCategoryJobs() {
+
+        const categorySections = {
+            government: document.querySelector("#government .jobs-grid"),
+            private: document.querySelector("#private .jobs-grid"),
+            internship: document.querySelector("#internships .jobs-grid"),
+            wfh: document.querySelector("#work-from-home .jobs-grid")
+        };
+
+        try {
+
+            if (
+                typeof supabaseClient === "undefined" ||
+                !supabaseClient
+            ) {
+                console.error(
+                    "Supabase client not found for category jobs."
+                );
+                return;
+            }
+
+            const { data, error } =
+                await supabaseClient
+                    .from("jobs")
+                    .select("*")
+                    .eq("is_active", true)
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
+
+            if (error) {
+                console.error(
+                    "Category jobs loading failed:",
+                    error
+                );
+                return;
+            }
+
+            const jobs = data || [];
+
+            /*
+             * Remove all old static/demo cards.
+             */
+            Object.values(categorySections).forEach(grid => {
+
+                if (grid) {
+                    grid.innerHTML = "";
+                }
+
+            });
+
+            /*
+             * Put every published job
+             * into its correct category.
+             */
+            jobs.forEach(job => {
+
+                const category =
+                    String(job.category || "")
+                        .trim()
+                        .toLowerCase();
+
+                let targetGrid = null;
+
+                if (
+                    category.includes("government") ||
+                    category.includes("govt")
+                ) {
+
+                    targetGrid =
+                        categorySections.government;
+
+                } else if (
+                    category.includes("private")
+                ) {
+
+                    targetGrid =
+                        categorySections.private;
+
+                } else if (
+                    category.includes("intern")
+                ) {
+
+                    targetGrid =
+                        categorySections.internship;
+
+                } else if (
+                    category.includes("work from home") ||
+                    category.includes("work-from-home") ||
+                    category.includes("wfh") ||
+                    category.includes("remote")
+                ) {
+
+                    targetGrid =
+                        categorySections.wfh;
+                }
+
+                /*
+                 * Ignore unknown categories.
+                 */
+                if (!targetGrid) {
+                    return;
+                }
+
+                /*
+                 * Use the existing website card design.
+                 */
+                const card =
+                    createJobCard(job);
+
+                /*
+                 * Category cards should open
+                 * the individual job details page.
+                 */
+                const button =
+                    card.querySelector(".job-button");
+
+                if (button) {
+
+                    button.href =
+                        "job-details.html?id=" +
+                        encodeURIComponent(job.id);
+
+                    button.textContent =
+                        "View Details";
+
+                    button.removeAttribute(
+                        "target"
+                    );
+
+                    button.removeAttribute(
+                        "rel"
+                    );
+                }
+
+                targetGrid.appendChild(card);
+
+            });
+
+            /*
+             * Start the existing reveal animation
+             * for newly created cards.
+             */
+            setupRevealObserver();
+
+        } catch (error) {
+
+            console.error(
+                "Unexpected category loading error:",
+                error
+            );
+
+        }
+
+    }
+
+    loadCategoryJobs();
 });
