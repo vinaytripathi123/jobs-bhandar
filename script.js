@@ -488,7 +488,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
 
-    /* =====================================================
+   
+    const footerBottom = /* =====================================================
        SEARCH
     ===================================================== */
 
@@ -585,8 +586,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     /* =====================================================
        CURRENT YEAR
     ===================================================== */
+   searchInput.addEventListener(
+            "input",
+            performSearch
+        );
 
-    const footerBottom =
+    }
+
+
+    /* =====================================================
+       CURRENT YEAR
+    ===================================================== */
+
+       const footerBottom =
         document.querySelector(
             ".footer-bottom"
         );
