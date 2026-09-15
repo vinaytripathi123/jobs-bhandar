@@ -21,6 +21,10 @@
     <meta name="robots" content="index, follow">
 
     <meta name="theme-color" content="#173B7A">
+    <meta property="og:title" content="JobsBhandar — Government, Private Jobs & Internships">
+<meta property="og:description" content="Find government jobs, private jobs, internships and work from home opportunities on JobsBhandar.">
+<meta property="og:url" content="https://jobsbhandar.in/">
+<meta property="og:type" content="website">
 
     <title>JobsBhandar — Government, Private Jobs & Internships</title>
     <link rel="canonical" href="https://jobsbhandar.in/">
@@ -1467,5 +1471,17 @@
 
 </body>
 </html>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase-client.js"></script>
+    <script>
+        (async function () {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+        
+            if (!session) {
+                window.location.href = "admin/login.html";
+            }
+        })();
+        </script>
+    <script src="admin.js?v=2"></script>
+    
     
