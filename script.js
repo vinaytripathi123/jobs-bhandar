@@ -1,16 +1,22 @@
 /* =========================================================
    JOBSBHANDAR
-   PUBLIC WEBSITE - JOB LOADING + CATEGORY + SEARCH
-========================================================= */
+   PUBLIC WEBSITE
+   SUPABASE + CATEGORY INTEGRATION + SEARCH
+   ========================================================= */
 
-document.addEventListener("DOMContentLoaded", async () => {
+   document.addEventListener("DOMContentLoaded", async () => {
 
     /* =====================================================
        MOBILE MENU
+       EXISTING FEATURE PRESERVED
     ===================================================== */
 
-    const menuButton = document.getElementById("menuButton");
-    const mainNav = document.getElementById("mainNav");
+    const menuButton =
+        document.getElementById("menuButton");
+
+    const mainNav =
+        document.getElementById("mainNav");
+
 
     if (menuButton && mainNav) {
 
@@ -28,33 +34,41 @@ document.addEventListener("DOMContentLoaded", async () => {
                 "menu-open",
                 isOpen
             );
+
         });
 
-        mainNav.querySelectorAll("a").forEach(link => {
 
-            link.addEventListener("click", () => {
+        mainNav
+            .querySelectorAll("a")
+            .forEach(link => {
 
-                mainNav.classList.remove("open");
+                link.addEventListener("click", () => {
 
-                menuButton.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
+                    mainNav.classList.remove("open");
 
-                document.body.classList.remove(
-                    "menu-open"
-                );
+                    menuButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                    document.body.classList.remove(
+                        "menu-open"
+                    );
+
+                });
+
             });
 
-        });
     }
 
 
     /* =====================================================
        SCROLL REVEAL
+       EXISTING ANIMATION PRESERVED
     ===================================================== */
 
     let revealObserver = null;
+
 
     function setupRevealObserver() {
 
@@ -62,6 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.querySelectorAll(
                 ".reveal:not([data-reveal-ready])"
             );
+
 
         if (!("IntersectionObserver" in window)) {
 
@@ -77,7 +92,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
             return;
+
         }
+
 
         if (!revealObserver) {
 
@@ -87,7 +104,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                         entries.forEach(entry => {
 
-                            if (entry.isIntersecting) {
+                            if (
+                                entry.isIntersecting
+                            ) {
 
                                 entry.target.classList.add(
                                     "visible"
@@ -96,6 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 observer.unobserve(
                                     entry.target
                                 );
+
                             }
 
                         });
@@ -105,7 +125,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                         threshold: 0.12
                     }
                 );
+
         }
+
 
         revealElements.forEach(element => {
 
@@ -117,9 +139,75 @@ document.addEventListener("DOMContentLoaded", async () => {
             revealObserver.observe(element);
 
         });
+
     }
 
+
     setupRevealObserver();
+
+
+    /* =====================================================
+       MAIN ELEMENTS
+    ===================================================== */
+
+    const latestJobs =
+        document.getElementById(
+            "latestJobs"
+        );
+
+
+    const noResults =
+        document.getElementById(
+            "noResults"
+        );
+
+
+    const searchForm =
+        document.getElementById(
+            "searchForm"
+        );
+
+
+    const searchInput =
+        document.getElementById(
+            "jobSearch"
+        );
+
+
+    /* =====================================================
+       CATEGORY CONTAINERS
+    ===================================================== */
+
+    const categoryGrids = {
+
+        government:
+            document.querySelector(
+                "#government .jobs-grid"
+            ),
+
+        private:
+            document.querySelector(
+                "#private .jobs-grid"
+            ),
+
+        internship:
+            document.querySelector(
+                "#internships .jobs-grid"
+            ),
+
+        wfh:
+            document.querySelector(
+                "#work-from-home .jobs-grid"
+            )
+
+    };
+
+
+    /* =====================================================
+       ALL JOB DATA
+    ===================================================== */
+
+    let allJobs = [];
 
 
     /* =====================================================
@@ -134,23 +222,30 @@ document.addEventListener("DOMContentLoaded", async () => {
             .replace(/>/g, "&gt;")
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
+
     }
 
 
     function escapeAttribute(value) {
 
-        const stringValue =
-            String(value || "#").trim();
+        const text =
+            String(value || "#")
+                .trim();
+
 
         if (
-            stringValue
+            text
                 .toLowerCase()
                 .startsWith("javascript:")
         ) {
+
             return "#";
+
         }
 
-        return escapeHtml(stringValue);
+
+        return escapeHtml(text);
+
     }
 
 
@@ -160,46 +255,57 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function normalizeCategory(category) {
 
-        return String(category || "")
-            .trim()
-            .toLowerCase()
-            .replace(/[_-]+/g, " ")
-            .replace(/\s+/g, " ");
-    }
-
-
-    function getCategoryKey(category) {
-
         const value =
-            normalizeCategory(category);
+            String(category || "")
+                .trim()
+                .toLowerCase();
+
 
         if (
             value.includes("government") ||
-            value.includes("govt")
+            value.includes("govt") ||
+            value.includes("sarkari")
         ) {
+
             return "government";
+
         }
 
-        if (value.includes("private")) {
-            return "private";
-        }
 
         if (
             value.includes("internship") ||
             value.includes("intern")
         ) {
+
             return "internship";
+
         }
+
 
         if (
             value.includes("work from home") ||
-            value === "wfh" ||
+            value.includes("work-from-home") ||
+            value.includes("wfh") ||
             value.includes("remote")
         ) {
+
             return "wfh";
+
         }
 
-        return null;
+
+        if (
+            value.includes("private") ||
+            value.includes("corporate")
+        ) {
+
+            return "private";
+
+        }
+
+
+        return "";
+
     }
 
 
@@ -210,46 +316,72 @@ document.addEventListener("DOMContentLoaded", async () => {
     function createJobCard(job) {
 
         const card =
-            document.createElement("article");
+            document.createElement(
+                "article"
+            );
+
 
         card.className =
             "job-card reveal";
 
+
         const title =
-            job.title || "Job Opportunity";
+            job.title ||
+            "Job Opportunity";
+
 
         const company =
-            job.company || "Company";
+            job.company ||
+            "Company";
+
 
         const location =
-            job.location || "India";
+            job.location ||
+            "India";
+
 
         const category =
-            job.category || "Job";
+            job.category ||
+            "Job";
+
 
         const jobType =
-            job.job_type || "Full Time";
+            job.job_type ||
+            "Full Time";
+
 
         const salary =
-            job.salary || "Salary not specified";
+            job.salary ||
+            "Salary not specified";
+
 
         const qualification =
             job.qualification ||
             "Qualification not specified";
 
+
         const experience =
             job.experience ||
             "Experience not specified";
+
 
         const lastDate =
             job.last_date ||
             "Apply soon";
 
+
         const applyLink =
-            job.apply_link || "#";
+            job.apply_link ||
+            "#";
+
 
         const jobId =
             job.id;
+
+
+        /* =================================================
+           COMPANY INITIALS
+        ================================================= */
 
         const logoText =
             company
@@ -262,25 +394,65 @@ document.addEventListener("DOMContentLoaded", async () => {
                 .join("")
                 .toUpperCase();
 
+
+        /* =================================================
+           CATEGORY STYLE
+        ================================================= */
+
         const categoryKey =
-            getCategoryKey(category);
+            normalizeCategory(
+                category
+            );
+
 
         let logoClass = "";
+
         let statusClass = "";
 
-        if (categoryKey === "private") {
 
-            logoClass = "purple";
+        if (
+            categoryKey === "private"
+        ) {
 
-        } else if (categoryKey === "internship") {
+            logoClass =
+                "purple";
 
-            logoClass = "orange";
-            statusClass = "orange-status";
+        }
 
-        } else if (categoryKey === "wfh") {
 
-            logoClass = "green-logo";
-            statusClass = "green";
+        if (
+            categoryKey === "internship"
+        ) {
+
+            logoClass =
+                "orange";
+
+            statusClass =
+                "orange-status";
+
+        }
+
+
+        if (
+            categoryKey === "wfh"
+        ) {
+
+            logoClass =
+                "green-logo";
+
+            statusClass =
+                "green";
+
+        }
+
+
+        if (
+            categoryKey === "government"
+        ) {
+
+            statusClass =
+                "green";
+
         }
 
 
@@ -288,20 +460,29 @@ document.addEventListener("DOMContentLoaded", async () => {
            SEARCH DATA
         ================================================= */
 
-        card.dataset.search =
-            [
-                title,
-                company,
-                location,
-                category,
-                jobType,
-                salary,
-                qualification,
-                experience,
-                lastDate
-            ]
-                .join(" ")
-                .toLowerCase();
+        card.dataset.search = [
+
+            title,
+            company,
+            location,
+            category,
+            jobType,
+            salary,
+            qualification,
+            experience,
+            job.description || ""
+
+        ]
+            .join(" ")
+            .toLowerCase();
+
+
+        card.dataset.category =
+            categoryKey;
+
+
+        card.dataset.jobId =
+            jobId ?? "";
 
 
         /* =================================================
@@ -309,8 +490,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         ================================================= */
 
         const detailsLink =
-            jobId !== undefined &&
-            jobId !== null
+            (
+                jobId !== undefined &&
+                jobId !== null
+            )
                 ? "job-details.html?id=" +
                   encodeURIComponent(jobId)
                 : "#";
@@ -379,15 +562,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </span>
 
 
-                <div
-                    class="job-actions"
-                    style="
-                        display:flex;
-                        gap:10px;
-                        align-items:center;
-                        flex-wrap:wrap;
-                    "
-                >
+                <div class="job-card-actions">
 
                     <a
                         class="job-button"
@@ -412,159 +587,345 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         `;
 
+
         return card;
+
     }
 
 
     /* =====================================================
-       ELEMENTS
+       CLEAR OLD STATIC / DEMO CARDS
     ===================================================== */
 
-    const latestJobs =
-        document.getElementById("latestJobs");
+    function clearAllJobGrids() {
 
-    const noResults =
-        document.getElementById("noResults");
+        if (latestJobs) {
 
-    const searchForm =
-        document.getElementById("searchForm");
+            latestJobs.innerHTML = "";
 
-    const searchInput =
-        document.getElementById("jobSearch");
+        }
+
+
+        Object
+            .values(categoryGrids)
+            .forEach(grid => {
+
+                if (grid) {
+
+                    grid.innerHTML = "";
+
+                }
+
+            });
+
+    }
 
 
     /* =====================================================
-       CATEGORY GRIDS
+       EMPTY CATEGORY MESSAGE
     ===================================================== */
 
-    const categoryGrids = {
-
-        government:
-            document.querySelector(
-                "#government .jobs-grid"
-            ),
-
-        private:
-            document.querySelector(
-                "#private .jobs-grid"
-            ),
-
-        internship:
-            document.querySelector(
-                "#internships .jobs-grid"
-            ),
-
-        wfh:
-            document.querySelector(
-                "#work-from-home .jobs-grid"
-            )
-    };
-
-
-    /* =====================================================
-       CATEGORY SECTION HEADERS
-       SEE JOBS BUTTON
-    ===================================================== */
-
-    const categorySections = {
-
-        government:
-            document.getElementById("government"),
-
-        private:
-            document.getElementById("private"),
-
-        internship:
-            document.getElementById("internships"),
-
-        wfh:
-            document.getElementById("work-from-home")
-    };
-
-
-    function setupSeeJobsButton(
-        categoryKey,
-        grid
+    function showEmptyMessage(
+        grid,
+        categoryName
     ) {
 
-        const section =
-            categorySections[categoryKey];
+        if (!grid) {
 
-        if (!section) {
             return;
+
         }
 
-        const button =
-            section.querySelector(".view-all");
 
-        if (!button) {
-            return;
-        }
+        grid.innerHTML = `
 
-        button.textContent =
-            "See Jobs →";
+            <div
+                class="category-empty-message"
+                style="
+                    grid-column:1/-1;
+                    padding:28px;
+                    text-align:center;
+                    border:1px dashed #d9e0ea;
+                    border-radius:16px;
+                    background:#ffffff;
+                    color:#667085;
+                "
+            >
+                No ${escapeHtml(categoryName)}
+                jobs available right now.
+            </div>
 
-        button.removeAttribute("href");
+        `;
 
-        button.style.cursor =
-            "pointer";
-
-        button.addEventListener(
-            "click",
-            event => {
-
-                event.preventDefault();
-
-                if (!grid) {
-                    return;
-                }
-
-                const firstJob =
-                    grid.querySelector(
-                        ".job-card"
-                    );
-
-                if (firstJob) {
-
-                    firstJob.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center"
-                    });
-
-                } else {
-
-                    grid.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center"
-                    });
-                }
-            }
-        );
     }
 
 
-    Object.entries(categoryGrids)
-        .forEach(([key, grid]) => {
+    /* =====================================================
+       CATEGORY "SEE JOBS →"
+    ===================================================== */
 
-            setupSeeJobsButton(
-                key,
-                grid
+    function setupCategoryLinks() {
+
+        const sections = [
+
+            {
+                id: "government",
+                grid: categoryGrids.government
+            },
+
+            {
+                id: "private",
+                grid: categoryGrids.private
+            },
+
+            {
+                id: "internships",
+                grid: categoryGrids.internship
+            },
+
+            {
+                id: "work-from-home",
+                grid: categoryGrids.wfh
+            }
+
+        ];
+
+
+        sections.forEach(section => {
+
+            const container =
+                document.getElementById(
+                    section.id
+                );
+
+
+            if (!container) {
+
+                return;
+
+            }
+
+
+            const link =
+                container.querySelector(
+                    ".view-all"
+                );
+
+
+            if (!link) {
+
+                return;
+
+            }
+
+
+            link.textContent =
+                "See Jobs →";
+
+
+            link.href =
+                "#";
+
+
+            link.style.cursor =
+                "pointer";
+
+
+            link.onclick =
+                event => {
+
+                    event.preventDefault();
+
+
+                    if (
+                        section.grid
+                    ) {
+
+                        section.grid.scrollIntoView({
+                            behavior: "smooth",
+                            block: "center"
+                        });
+
+                    }
+
+                };
+
+        });
+
+    }
+
+
+    /* =====================================================
+       RENDER ALL JOBS
+    ===================================================== */
+
+    function renderJobs() {
+
+        clearAllJobGrids();
+
+
+        /* =================================================
+           LATEST JOBS
+        ================================================= */
+
+        if (
+            latestJobs &&
+            allJobs.length
+        ) {
+
+            allJobs.forEach(job => {
+
+                latestJobs.appendChild(
+                    createJobCard(job)
+                );
+
+            });
+
+        }
+
+
+        /* =================================================
+           CATEGORY COUNTERS
+        ================================================= */
+
+        const counts = {
+
+            government: 0,
+            private: 0,
+            internship: 0,
+            wfh: 0
+
+        };
+
+
+        /* =================================================
+           CATEGORY RENDER
+        ================================================= */
+
+        allJobs.forEach(job => {
+
+            const categoryKey =
+                normalizeCategory(
+                    job.category
+                );
+
+
+            const grid =
+                categoryGrids[
+                    categoryKey
+                ];
+
+
+            if (
+                !grid ||
+                !categoryKey
+            ) {
+
+                return;
+
+            }
+
+
+            grid.appendChild(
+                createJobCard(job)
             );
+
+
+            counts[
+                categoryKey
+            ]++;
 
         });
 
 
+        /* =================================================
+           EMPTY CATEGORY HANDLING
+        ================================================= */
+
+        if (
+            counts.government === 0
+        ) {
+
+            showEmptyMessage(
+                categoryGrids.government,
+                "Government"
+            );
+
+        }
+
+
+        if (
+            counts.private === 0
+        ) {
+
+            showEmptyMessage(
+                categoryGrids.private,
+                "Private"
+            );
+
+        }
+
+
+        if (
+            counts.internship === 0
+        ) {
+
+            showEmptyMessage(
+                categoryGrids.internship,
+                "Internship"
+            );
+
+        }
+
+
+        if (
+            counts.wfh === 0
+        ) {
+
+            showEmptyMessage(
+                categoryGrids.wfh,
+                "Work From Home"
+            );
+
+        }
+
+
+        /* =================================================
+           NO LATEST JOBS
+        ================================================= */
+
+        if (noResults) {
+
+            noResults.hidden =
+                allJobs.length !== 0;
+
+        }
+
+
+        setupCategoryLinks();
+
+
+        setupRevealObserver();
+
+
+        console.log(
+            "JobsBhandar category counts:",
+            counts
+        );
+
+    }
+
+
     /* =====================================================
-       LOAD ALL JOBS
+       LOAD JOBS FROM SUPABASE
+       ONLY ONE QUERY
     ===================================================== */
-
-    let allJobs = [];
-
 
     async function loadJobs() {
 
         if (
-            typeof supabaseClient === "undefined" ||
+            typeof supabaseClient ===
+                "undefined" ||
             !supabaseClient
         ) {
 
@@ -573,16 +934,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             );
 
             return;
+
         }
 
 
         try {
 
-            const { data, error } =
+            const {
+                data,
+                error
+            } =
                 await supabaseClient
                     .from("jobs")
                     .select("*")
-                    .eq("is_active", true)
+                    .eq(
+                        "is_active",
+                        true
+                    )
                     .order(
                         "created_at",
                         {
@@ -599,6 +967,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 );
 
                 return;
+
             }
 
 
@@ -608,554 +977,145 @@ document.addEventListener("DOMContentLoaded", async () => {
                     : [];
 
 
-            /* =============================================
-               REMOVE STATIC JOB CARDS
-            ============================================= */
-
-            if (latestJobs) {
-                latestJobs.innerHTML = "";
-            }
+            console.log(
+                "Public jobs loaded:",
+                allJobs
+            );
 
 
-            Object.values(categoryGrids)
-                .forEach(grid => {
+            renderJobs();
 
-                    if (grid) {
-                        grid.innerHTML = "";
-                    }
-
-                });
-
-
-            /* =============================================
-               LATEST JOBS
-               ALL ACTIVE JOBS
-            ============================================= */
-
-            if (latestJobs) {
-
-                allJobs.forEach(job => {
-
-                    const card =
-                        createJobCard(job);
-
-                    latestJobs.appendChild(card);
-
-                });
-            }
-
-
-            /* =============================================
-               CATEGORY-WISE JOBS
-            ============================================= */
-
-            allJobs.forEach(job => {
-
-                const categoryKey =
-                    getCategoryKey(
-                        job.category
-                    );
-
-                if (!categoryKey) {
-                    return;
-                }
-
-
-                const grid =
-                    categoryGrids[
-                        categoryKey
-                    ];
-
-                if (!grid) {
-                    return;
-                }
-
-
-                const card =
-                    createJobCard(job);
-
-                grid.appendChild(card);
-
-            });
-
-
-            /* =============================================
-               SHOW / HIDE EMPTY CATEGORY
-            ============================================= */
-
-            Object.entries(categoryGrids)
-                .forEach(([key, grid]) => {
-
-                    const section =
-                        categorySections[key];
-
-                    if (!grid || !section) {
-                        return;
-                    }
-
-                    const jobs =
-                        grid.querySelectorAll(
-                            ".job-card"
-                        );
-
-
-                    if (jobs.length === 0) {
-
-                        grid.innerHTML = `
-
-                            <div
-                                class="category-empty"
-                                style="
-                                    grid-column:1/-1;
-                                    text-align:center;
-                                    padding:30px 20px;
-                                    opacity:.75;
-                                "
-                            >
-
-                                <strong>
-                                    No jobs available
-                                </strong>
-
-                                <p>
-                                    New ${escapeHtml(
-                                        getCategoryLabel(key)
-                                    )} jobs will appear here.
-                                </p>
-
-                            </div>
-
-                        `;
-
-                    }
-
-                });
-
-
-            setupRevealObserver();
-
-            setupSearchSuggestions();
-
-            performSearch();
-
-        } catch (error) {
+        }
+        catch (error) {
 
             console.error(
-                "Unexpected job loading error:",
+                "Unexpected error while loading jobs:",
                 error
             );
 
         }
-    }
 
-
-    /* =====================================================
-       CATEGORY LABEL
-    ===================================================== */
-
-    function getCategoryLabel(key) {
-
-        if (key === "government") {
-            return "Government";
-        }
-
-        if (key === "private") {
-            return "Private";
-        }
-
-        if (key === "internship") {
-            return "Internship";
-        }
-
-        if (key === "wfh") {
-            return "Work From Home";
-        }
-
-        return "Job";
     }
 
 
     /* =====================================================
        SEARCH
-       SEARCHES ALL CATEGORY SECTIONS
-       BUT KEEPS JOB IN ITS OWN CATEGORY
+       NO DROPDOWN / NO SUGGESTION BOX
     ===================================================== */
+
+    function normalizeSearchText(
+        value
+    ) {
+
+        return String(value || "")
+            .toLowerCase()
+            .replace(
+                /[^a-z0-9\s&+.-]/g,
+                " "
+            )
+            .replace(
+                /\s+/g,
+                " "
+            )
+            .trim();
+
+    }
+
 
     function performSearch() {
 
         if (!searchInput) {
+
             return;
+
         }
 
 
-        const rawValue =
-            searchInput.value
-                .trim()
-                .toLowerCase();
+        const searchValue =
+            normalizeSearchText(
+                searchInput.value
+            );
 
 
-        const searchTerms =
-            rawValue
-                .split(/\s+/)
-                .filter(Boolean);
-
-
-        let totalMatches = 0;
-
-
-        Object.values(categoryGrids)
-            .forEach(grid => {
-
-                if (!grid) {
-                    return;
-                }
-
-
-                const cards =
-                    grid.querySelectorAll(
-                        ".job-card"
-                    );
-
-
-                let categoryMatches = 0;
-
-
-                cards.forEach(card => {
-
-                    const searchableText =
-                        (
-                            card.dataset.search ||
-                            card.innerText ||
-                            ""
-                        )
-                            .toLowerCase();
-
-
-                    const matches =
-                        searchTerms.length === 0 ||
-                        searchTerms.every(term =>
-                            searchableText.includes(
-                                term
-                            )
-                        );
-
-
-                    card.style.display =
-                        matches
-                            ? ""
-                            : "none";
-
-
-                    if (matches) {
-
-                        categoryMatches++;
-                        totalMatches++;
-
-                    }
-
-                });
-
-
-                /*
-                 * Category section remains visible.
-                 * Only its matching cards are shown.
-                 */
-
-                const emptyMessage =
-                    grid.querySelector(
-                        ".category-empty"
-                    );
-
-
-                if (emptyMessage) {
-
-                    emptyMessage.style.display =
-                        searchTerms.length === 0
-                            ? ""
-                            : "none";
-                }
-
-            });
+        const terms =
+            searchValue
+                ? searchValue
+                    .split(" ")
+                    .filter(Boolean)
+                : [];
 
 
         /*
-         * Latest Jobs search
+         * Search ONLY the Latest Jobs area.
+         *
+         * Category sections remain untouched.
+         * Therefore a job can never be moved
+         * into another category because of search.
          */
 
-        if (latestJobs) {
-
-            const latestCards =
-                latestJobs.querySelectorAll(
+        const cards =
+            latestJobs
+                ? latestJobs.querySelectorAll(
                     ".job-card"
+                )
+                : [];
+
+
+        let visibleCount = 0;
+
+
+        cards.forEach(card => {
+
+            const searchableText =
+                normalizeSearchText(
+                    card.dataset.search ||
+                    card.innerText ||
+                    ""
                 );
 
 
-            latestCards.forEach(card => {
-
-                const searchableText =
-                    (
-                        card.dataset.search ||
-                        card.innerText ||
-                        ""
+            const matches =
+                terms.length === 0 ||
+                terms.every(term =>
+                    searchableText.includes(
+                        term
                     )
-                        .toLowerCase();
+                );
 
 
-                const matches =
-                    searchTerms.length === 0 ||
-                    searchTerms.every(term =>
-                        searchableText.includes(
-                            term
-                        )
-                    );
+            card.style.display =
+                matches
+                    ? ""
+                    : "none";
 
 
-                card.style.display =
-                    matches
-                        ? ""
-                        : "none";
+            if (matches) {
 
-            });
+                visibleCount++;
 
-        }
+            }
 
+        });
 
-        /*
-         * No Results
-         */
 
         if (noResults) {
 
             noResults.hidden =
-                rawValue !== "" &&
-                totalMatches === 0;
+                visibleCount !== 0;
 
         }
+
     }
 
 
     /* =====================================================
-       SEARCH SUGGESTIONS
+       SEARCH EVENTS
     ===================================================== */
 
-    let searchSuggestions =
-        document.getElementById(
-            "searchSuggestions"
-        );
-
-
-    function setupSearchSuggestions() {
-
-        if (
-            !searchForm ||
-            !searchInput
-        ) {
-            return;
-        }
-
-
-        if (!searchSuggestions) {
-
-            searchSuggestions =
-                document.createElement(
-                    "div"
-                );
-
-            searchSuggestions.id =
-                "searchSuggestions";
-
-            searchSuggestions.className =
-                "rich-search-suggestions";
-
-            searchSuggestions.style.display =
-                "none";
-
-            searchForm.style.position =
-                "relative";
-
-            searchForm.appendChild(
-                searchSuggestions
-            );
-        }
-
-
-        const popularSearches = [
-
-            "Government Jobs",
-            "Private Jobs",
-            "Internship",
-            "Work From Home",
-            "Banking Jobs",
-            "IT Jobs",
-            "Finance Jobs",
-            "Marketing Jobs",
-            "Jobs in Varanasi",
-            "Jobs in Uttar Pradesh"
-
-        ];
-
-
-        function getJobSuggestions() {
-
-            const suggestions = [];
-
-            allJobs.forEach(job => {
-
-                if (job.title) {
-
-                    suggestions.push(
-                        job.title
-                    );
-                }
-
-                if (job.company) {
-
-                    suggestions.push(
-                        job.company
-                    );
-                }
-
-            });
-
-
-            return [
-                ...new Set(suggestions)
-            ]
-                .slice(0, 8);
-        }
-
-
-        function renderSuggestions(
-            filterText = ""
-        ) {
-
-            const text =
-                filterText
-                    .trim()
-                    .toLowerCase();
-
-
-            const jobSuggestions =
-                getJobSuggestions();
-
-
-            const combined =
-                [
-                    ...jobSuggestions,
-                    ...popularSearches
-                ];
-
-
-            const unique =
-                [
-                    ...new Set(combined)
-                ];
-
-
-            const filtered =
-                text === ""
-                    ? unique.slice(0, 8)
-                    : unique
-                        .filter(item =>
-                            item
-                                .toLowerCase()
-                                .includes(text)
-                        )
-                        .slice(0, 8);
-
-
-            if (filtered.length === 0) {
-
-                searchSuggestions.style.display =
-                    "none";
-
-                searchSuggestions.innerHTML =
-                    "";
-
-                return;
-            }
-
-
-            searchSuggestions.innerHTML =
-                filtered
-                    .map(item => `
-
-                        <button
-                            type="button"
-                            class="search-suggestion-item"
-                            data-search-value="${escapeAttribute(item)}"
-                        >
-                            🔎
-                            ${escapeHtml(item)}
-                        </button>
-
-                    `)
-                    .join("");
-
-
-            searchSuggestions.style.display =
-                "block";
-
-
-            searchSuggestions
-                .querySelectorAll(
-                    ".search-suggestion-item"
-                )
-                .forEach(button => {
-
-                    button.addEventListener(
-                        "click",
-                        () => {
-
-                            searchInput.value =
-                                button.dataset.searchValue ||
-                                "";
-
-                            searchSuggestions.style.display =
-                                "none";
-
-                            performSearch();
-
-                            if (latestJobs) {
-
-                                latestJobs.scrollIntoView({
-                                    behavior: "smooth",
-                                    block: "start"
-                                });
-                            }
-
-                        }
-                    );
-
-                });
-        }
-
-
-        searchInput.addEventListener(
-            "focus",
-            () => {
-
-                renderSuggestions(
-                    searchInput.value
-                );
-
-            }
-        );
-
-
-        searchInput.addEventListener(
-            "input",
-            () => {
-
-                renderSuggestions(
-                    searchInput.value
-                );
-
-                performSearch();
-
-            }
-        );
-
+    if (
+        searchForm &&
+        searchInput
+    ) {
 
         searchForm.addEventListener(
             "submit",
@@ -1163,7 +1123,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 event.preventDefault();
 
+
                 performSearch();
+
 
                 if (latestJobs) {
 
@@ -1171,30 +1133,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         behavior: "smooth",
                         block: "start"
                     });
-                }
 
-                if (searchSuggestions) {
-
-                    searchSuggestions.style.display =
-                        "none";
-                }
-
-            }
-        );
-
-
-        document.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    !searchForm.contains(
-                        event.target
-                    )
-                ) {
-
-                    searchSuggestions.style.display =
-                        "none";
                 }
 
             }
@@ -1202,80 +1141,114 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
         searchInput.addEventListener(
-            "keydown",
-            event => {
-
-                if (
-                    event.key === "Escape"
-                ) {
-
-                    searchSuggestions.style.display =
-                        "none";
-
-                    searchInput.blur();
-                }
-
-            }
+            "input",
+            performSearch
         );
+
     }
 
 
     /* =====================================================
-       CATEGORY NAVIGATION
+       POPULAR SEARCH LINKS
+       Existing links are kept functional.
     ===================================================== */
 
-    const categoryLinks = {
+    if (searchForm) {
 
-        government:
-            "#government",
-
-        private:
-            "#private",
-
-        internships:
-            "#internships",
-
-        "work-from-home":
-            "#work-from-home"
-
-    };
+        const popularLinks =
+            document.querySelectorAll(
+                ".popular-searches a"
+            );
 
 
-    Object.entries(categoryLinks)
-        .forEach(([key, selector]) => {
+        popularLinks.forEach(link => {
 
-            document
-                .querySelectorAll(
-                    `a[href="${selector}"]`
-                )
-                .forEach(link => {
+            link.addEventListener(
+                "click",
+                event => {
 
-                    link.addEventListener(
-                        "click",
-                        event => {
+                    const text =
+                        link.textContent
+                            .trim();
 
-                            const section =
-                                document.querySelector(
-                                    selector
-                                );
 
-                            if (!section) {
-                                return;
-                            }
+                    /*
+                     * Category popular links
+                     * should scroll to category.
+                     */
+
+                    const href =
+                        link.getAttribute(
+                            "href"
+                        );
+
+
+                    if (
+                        href &&
+                        href.startsWith("#")
+                    ) {
+
+                        const target =
+                            document.querySelector(
+                                href
+                            );
+
+
+                        if (target) {
 
                             event.preventDefault();
 
-                            section.scrollIntoView({
+
+                            target.scrollIntoView({
+                                behavior: "smooth",
+                                block: "start"
+                            });
+
+
+                            return;
+
+                        }
+
+                    }
+
+
+                    /*
+                     * Otherwise use the text
+                     * as a normal search.
+                     */
+
+                    if (
+                        searchInput &&
+                        text
+                    ) {
+
+                        event.preventDefault();
+
+
+                        searchInput.value =
+                            text;
+
+
+                        performSearch();
+
+
+                        if (latestJobs) {
+
+                            latestJobs.scrollIntoView({
                                 behavior: "smooth",
                                 block: "start"
                             });
 
                         }
-                    );
 
-                });
+                    }
+
+                }
+            );
 
         });
+
+    }
 
 
     /* =====================================================
@@ -1287,23 +1260,72 @@ document.addEventListener("DOMContentLoaded", async () => {
             ".footer-bottom"
         );
 
+
     if (footerBottom) {
 
-        const currentYear =
+        const year =
             new Date().getFullYear();
+
 
         footerBottom.innerHTML =
             footerBottom.innerHTML.replace(
                 /2026/g,
-                currentYear
+                year
             );
+
     }
 
 
     /* =====================================================
-       LOAD
+       START APPLICATION
     ===================================================== */
 
     await loadJobs();
+
+
+    /* =====================================================
+       FINAL REVEAL SAFETY
+       Prevent invisible front-end if observer
+       has not initialized correctly.
+    ===================================================== */
+
+    document
+        .querySelectorAll(
+            ".reveal:not(.visible)"
+        )
+        .forEach(element => {
+
+            if (
+                element.dataset.revealReady ===
+                "true"
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+             * Static page elements that are
+             * already on screen should remain
+             * visible.
+             */
+
+            const rect =
+                element.getBoundingClientRect();
+
+
+            if (
+                rect.top <
+                window.innerHeight
+            ) {
+
+                element.classList.add(
+                    "visible"
+                );
+
+            }
+
+        });
 
 });
