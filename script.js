@@ -1824,3 +1824,54 @@
 
 
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const sectionIds = ["contact", "privacy", "terms"];
+
+    function hideInformationSections() {
+        sectionIds.forEach(function (id) {
+            const section = document.getElementById(id);
+
+            if (section) {
+                section.classList.remove("page-section-active");
+            }
+        });
+    }
+
+    function showInformationSection(id) {
+        hideInformationSections();
+
+        const section = document.getElementById(id);
+
+        if (!section) return;
+
+        section.classList.add("page-section-active");
+
+        setTimeout(function () {
+            section.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }, 50);
+    }
+
+    document.querySelectorAll('a[href="#contact"]').forEach(function (link) {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
+            showInformationSection("contact");
+        });
+    });
+
+    document.querySelectorAll('a[href="#privacy"]').forEach(function (link) {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
+            showInformationSection("privacy");
+        });
+    });
+
+    document.querySelectorAll('a[href="#terms"]').forEach(function (link) {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
+            showInformationSection("terms");
+        });
+    });
+});
