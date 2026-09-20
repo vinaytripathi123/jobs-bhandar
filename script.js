@@ -4,14 +4,17 @@
    SUPABASE + CATEGORY SYSTEM + SEARCH
    ========================================================= */
 
-document.addEventListener("DOMContentLoaded", async () => {
+   document.addEventListener("DOMContentLoaded", async () => {
 
     /* =====================================================
        MOBILE MENU
     ===================================================== */
 
-    const menuButton = document.getElementById("menuButton");
-    const mainNav = document.getElementById("mainNav");
+    const menuButton =
+        document.getElementById("menuButton");
+
+    const mainNav =
+        document.getElementById("mainNav");
 
     if (menuButton && mainNav) {
 
@@ -76,9 +79,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             String(value || "#").trim();
 
         if (
-            url.toLowerCase().startsWith("javascript:")
+            url
+                .toLowerCase()
+                .startsWith("javascript:")
         ) {
+
             return "#";
+
         }
 
         return escapeHtml(url);
@@ -91,6 +98,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     ===================================================== */
 
     let revealObserver = null;
+
 
     function setupRevealObserver() {
 
@@ -113,6 +121,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
             return;
+
         }
 
 
@@ -228,7 +237,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             value.includes("govt") ||
             value.includes("sarkari")
         ) {
+
             return "government";
+
         }
 
         if (
@@ -236,7 +247,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             value === "intern" ||
             value.includes("intern ")
         ) {
+
             return "internship";
+
         }
 
         if (
@@ -244,14 +257,18 @@ document.addEventListener("DOMContentLoaded", async () => {
             value.includes("remote") ||
             value.includes("wfh")
         ) {
+
             return "wfh";
+
         }
 
         if (
             value.includes("private") ||
             value.includes("corporate")
         ) {
+
             return "private";
+
         }
 
         return null;
@@ -261,7 +278,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     /* =====================================================
        CREATE JOB CARD
-       
+
        IMPORTANT:
        FULL DESCRIPTION IS NOT SHOWN HERE.
        Description is available on job-details.html.
@@ -384,7 +401,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         /* =================================================
            SEARCH DATA
-           
+
            Description is searchable but NOT displayed
            inside the card.
         ================================================= */
@@ -421,7 +438,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         /* =================================================
            CARD HTML
-           
+
            NO FULL DESCRIPTION HERE.
         ================================================= */
 
@@ -620,7 +637,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         ) {
 
             console.error(
-                "Supabase client not found."
+                "Supabase client is not available."
+            );
+
+            showCategoryEmpty(
+                latestJobs,
+                "Jobs are temporarily unavailable."
             );
 
             return;
@@ -630,26 +652,35 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         try {
 
+            clearStaticCards();
+
+
             const {
                 data,
                 error
-            } = await supabaseClient
-                .from("jobs")
-                .select("*")
-                .eq("is_active", true)
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
-                    }
-                );
+            } =
+                await supabaseClient
+                    .from("jobs")
+                    .select("*")
+                    .eq("is_active", true)
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
 
 
             if (error) {
 
                 console.error(
-                    "Failed to load jobs:",
+                    "Error loading jobs:",
                     error
+                );
+
+                showCategoryEmpty(
+                    latestJobs,
+                    "Unable to load jobs right now."
                 );
 
                 return;
@@ -665,187 +696,30 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             console.log(
                 "Public jobs loaded:",
+                allJobs.length
+            );
+
+
+            renderLatestJobs(
                 allJobs
             );
 
 
-            /* =============================================
-               REMOVE ALL OLD STATIC CARDS
-            ============================================= */
-
-            clearStaticCards();
-
-
-            /* =============================================
-               LATEST JOBS
-               
-               All active jobs appear here.
-            ============================================= */
-
-            if (latestJobs) {
-
-                if (allJobs.length === 0) {
-
-                    if (noResults) {
-
-                        noResults.hidden = false;
-
-                    }
-
-                } else {
-
-                    if (noResults) {
-
-                        noResults.hidden = true;
-
-                    }
-
-
-                    allJobs.forEach(job => {
-
-                        const card =
-                            createJobCard(job);
-
-                        latestJobs.appendChild(card);
-
-                    });
-
-                }
-
-            }
-
-
-            /* =============================================
-               CATEGORY-WISE JOBS
-            ============================================= */
-
-            const categoryCounts = {
-
-                government: 0,
-                private: 0,
-                internship: 0,
-                wfh: 0
-
-            };
-
-
-            allJobs.forEach(job => {
-
-                const category =
-                    normalizeCategory(
-                        job.category
-                    );
-
-
-                if (!category) {
-
-                    console.warn(
-                        "Unknown job category:",
-                        job.category,
-                        job.title
-                    );
-
-                    return;
-
-                }
-
-
-                const grid =
-                    categoryGrids[category];
-
-
-                if (!grid) {
-
-                    return;
-
-                }
-
-
-                const card =
-                    createJobCard(job);
-
-
-                grid.appendChild(card);
-
-
-                categoryCounts[category]++;
-
-            });
-
-
-            /* =============================================
-               EMPTY CATEGORY SECTIONS
-            ============================================= */
-
-            if (
-                categoryGrids.government &&
-                categoryCounts.government === 0
-            ) {
-
-                showCategoryEmpty(
-                    categoryGrids.government,
-                    "No Government Jobs Available"
-                );
-
-            }
-
-
-            if (
-                categoryGrids.private &&
-                categoryCounts.private === 0
-            ) {
-
-                showCategoryEmpty(
-                    categoryGrids.private,
-                    "No Private Jobs Available"
-                );
-
-            }
-
-
-            if (
-                categoryGrids.internship &&
-                categoryCounts.internship === 0
-            ) {
-
-                showCategoryEmpty(
-                    categoryGrids.internship,
-                    "No Internship Jobs Available"
-                );
-
-            }
-
-
-            if (
-                categoryGrids.wfh &&
-                categoryCounts.wfh === 0
-            ) {
-
-                showCategoryEmpty(
-                    categoryGrids.wfh,
-                    "No Work From Home Jobs Available"
-                );
-
-            }
-
-
-            /* =============================================
-               RESTART REVEAL ANIMATION FOR NEW CARDS
-            ============================================= */
-
-            setupRevealObserver();
-
-
-            console.log(
-                "Category counts:",
-                categoryCounts
+            renderCategorySections(
+                allJobs
             );
+
 
         } catch (error) {
 
             console.error(
-                "Unexpected job loading error:",
+                "Unexpected error loading jobs:",
                 error
+            );
+
+            showCategoryEmpty(
+                latestJobs,
+                "Something went wrong while loading jobs."
             );
 
         }
@@ -854,52 +728,831 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     /* =====================================================
-       SEARCH
-       
-       SEARCH ONLY FILTERS LATEST JOBS.
-       IT DOES NOT MOVE JOBS BETWEEN CATEGORIES.
-       
-       NO SUGGESTION DROPDOWN.
+       RENDER LATEST JOBS
     ===================================================== */
 
-    function normalizeSearchText(value) {
+    function renderLatestJobs(jobs) {
 
-        return String(value || "")
-            .toLowerCase()
-            .replace(
-                /[^a-z0-9\s&+.-]/g,
-                " "
-            )
-            .replace(
-                /\s+/g,
-                " "
-            )
-            .trim();
-
-    }
+        if (!latestJobs) {
+            return;
+        }
 
 
-    function performSearch() {
+        latestJobs.innerHTML = "";
 
-        if (!latestJobs || !searchInput) {
+
+        if (!jobs.length) {
+
+            showCategoryEmpty(
+                latestJobs,
+                "No jobs available right now."
+            );
 
             return;
 
         }
 
 
-        const searchValue =
-            normalizeSearchText(
-                searchInput.value
+        jobs.forEach(job => {
+
+            const card =
+                createJobCard(job);
+
+            latestJobs.appendChild(card);
+
+        });
+
+
+        setupRevealObserver();
+
+    }
+
+
+    /* =====================================================
+       RENDER CATEGORY SECTIONS
+    ===================================================== */
+
+    function renderCategorySections(jobs) {
+
+        Object.values(categoryGrids)
+            .forEach(grid => {
+
+                if (grid) {
+
+                    grid.innerHTML = "";
+
+                }
+
+            });
+
+
+        const groupedJobs = {
+
+            government: [],
+            private: [],
+            internship: [],
+            wfh: []
+
+        };
+
+
+        jobs.forEach(job => {
+
+            const normalized =
+                normalizeCategory(
+                    job.category
+                );
+
+
+            if (
+                normalized &&
+                groupedJobs[normalized]
+            ) {
+
+                groupedJobs[normalized].push(job);
+
+            }
+
+        });
+
+
+        Object.entries(groupedJobs)
+            .forEach(
+                ([category, categoryJobs]) => {
+
+                    const grid =
+                        categoryGrids[category];
+
+
+                    if (!grid) {
+                        return;
+                    }
+
+
+                    if (!categoryJobs.length) {
+
+                        showCategoryEmpty(
+                            grid,
+                            "No jobs available in this category."
+                        );
+
+                        return;
+
+                    }
+
+
+                    categoryJobs.forEach(job => {
+
+                        const card =
+                            createJobCard(job);
+
+                        grid.appendChild(card);
+
+                    });
+
+                }
             );
 
 
+        setupRevealObserver();
+
+    }
+
+
+    /* =====================================================
+       START JOB LOADING
+    ===================================================== */
+
+    await loadJobs();
+        /* =====================================================
+       RICH SEARCH
+       ===================================================== */
+
+       function normalizeSearchText(value) {
+
+        return String(value || "")
+            .toLowerCase()
+            .replace(/&/g, " and ")
+            .replace(/[^a-z0-9\s.+#/-]/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
+
+    }
+
+
+    function normalizeSearchPhrases(value) {
+
+        let text =
+            normalizeSearchText(value);
+
+
+        const phraseRules = [
+
+            [
+                /\bbachelor\s+of\s+commerce\b/g,
+                "bcom"
+            ],
+
+            [
+                /\bb\s*\.?\s*com\b/g,
+                "bcom"
+            ],
+
+            [
+                /\bcommerce\s+graduate\b/g,
+                "bcom"
+            ],
+
+            [
+                /\bwork\s+from\s+home\b/g,
+                "remote"
+            ],
+
+            [
+                /\bwork\s+at\s+home\b/g,
+                "remote"
+            ],
+
+            [
+                /\bremote\s+work\b/g,
+                "remote"
+            ],
+
+            [
+                /\bremote\s+job\b/g,
+                "remote"
+            ],
+
+            [
+                /\bgovernment\s+job\b/g,
+                "government"
+            ],
+
+            [
+                /\bgovt\s+job\b/g,
+                "government"
+            ],
+
+            [
+                /\bsarkari\s+job\b/g,
+                "government"
+            ],
+
+            [
+                /\bprivate\s+job\b/g,
+                "private"
+            ],
+
+            [
+                /\bprivate\s+sector\b/g,
+                "private"
+            ],
+
+            [
+                /\bhuman\s+resources\b/g,
+                "hr"
+            ],
+
+            [
+                /\bbusiness\s+development\b/g,
+                "sales"
+            ],
+
+            [
+                /\bdata\s+entry\b/g,
+                "dataentry"
+            ],
+
+            [
+                /\bfull\s+stack\b/g,
+                "fullstack"
+            ],
+
+            [
+                /\bfront\s+end\b/g,
+                "frontend"
+            ],
+
+            [
+                /\bback\s+end\b/g,
+                "backend"
+            ]
+
+        ];
+
+
+        phraseRules.forEach(
+            ([pattern, replacement]) => {
+
+                text =
+                    text.replace(
+                        pattern,
+                        ` ${replacement} `
+                    );
+
+            }
+        );
+
+
+        return text
+            .replace(/\s+/g, " ")
+            .trim();
+
+    }
+
+
+    /* =====================================================
+       SEARCH ALIASES
+    ===================================================== */
+
+    const searchAliases = {
+
+        bcom: [
+            "bcom",
+            "b.com",
+            "bachelor",
+            "commerce",
+            "commerce graduate"
+        ],
+
+        account: [
+            "account",
+            "accounts",
+            "accountant",
+            "accounting",
+            "bookkeeping",
+            "bookkeeper"
+        ],
+
+        finance: [
+            "finance",
+            "financial",
+            "banking",
+            "accounts"
+        ],
+
+        bank: [
+            "bank",
+            "banking",
+            "finance"
+        ],
+
+        intern: [
+            "intern",
+            "internship",
+            "trainee",
+            "fresher"
+        ],
+
+        government: [
+            "government",
+            "govt",
+            "sarkari",
+            "public"
+        ],
+
+        private: [
+            "private",
+            "corporate",
+            "company"
+        ],
+
+        remote: [
+            "remote",
+            "wfh",
+            "workfromhome",
+            "work from home"
+        ],
+
+        graduate: [
+            "graduate",
+            "graduation",
+            "degree",
+            "bachelor",
+            "fresher"
+        ],
+
+        developer: [
+            "developer",
+            "development",
+            "programmer",
+            "software",
+            "coding"
+        ],
+
+        hr: [
+            "hr",
+            "human",
+            "resources",
+            "recruiter",
+            "recruitment"
+        ],
+
+        marketing: [
+            "marketing",
+            "digital marketing",
+            "promotion"
+        ],
+
+        sales: [
+            "sales",
+            "business development",
+            "bd",
+            "business"
+        ],
+
+        dataentry: [
+            "dataentry",
+            "data",
+            "entry"
+        ],
+
+        fullstack: [
+            "fullstack",
+            "full",
+            "stack"
+        ],
+
+        frontend: [
+            "frontend",
+            "front",
+            "end"
+        ],
+
+        backend: [
+            "backend",
+            "back",
+            "end"
+        ]
+
+    };
+
+
+    /* =====================================================
+       GENERIC SEARCH WORDS
+    ===================================================== */
+
+    const ignoredSearchWords =
+        new Set([
+
+            "job",
+            "jobs",
+            "vacancy",
+            "vacancies",
+            "career",
+            "careers",
+            "opening",
+            "openings",
+            "work",
+            "position",
+            "positions",
+            "role",
+            "roles",
+            "opportunity",
+            "opportunities",
+            "apply",
+            "employment",
+
+            "of",
+            "in",
+            "for",
+            "and",
+            "the",
+            "to",
+            "with",
+            "at",
+            "from",
+            "on",
+            "a",
+            "an",
+            "is",
+            "are",
+            "as",
+            "by",
+            "or",
+            "be",
+            "this",
+            "that",
+            "me",
+            "my",
+            "near",
+            "find",
+            "show",
+            "looking"
+
+        ]);
+
+
+    /* =====================================================
+       LEVENSHTEIN DISTANCE
+    ===================================================== */
+
+    function levenshteinDistance(
+        first,
+        second
+    ) {
+
+        if (first === second) {
+
+            return 0;
+
+        }
+
+        if (!first) {
+
+            return second.length;
+
+        }
+
+        if (!second) {
+
+            return first.length;
+
+        }
+
+
+        const previousRow =
+            Array.from(
+                {
+                    length:
+                        second.length + 1
+                },
+                (_, index) => index
+            );
+
+
+        for (
+            let i = 1;
+            i <= first.length;
+            i++
+        ) {
+
+            let previousDiagonal =
+                previousRow[0];
+
+            previousRow[0] = i;
+
+
+            for (
+                let j = 1;
+                j <= second.length;
+                j++
+            ) {
+
+                const current =
+                    previousRow[j];
+
+
+                const substitutionCost =
+                    first[i - 1] ===
+                    second[j - 1]
+                        ? 0
+                        : 1;
+
+
+                previousRow[j] =
+                    Math.min(
+
+                        previousRow[j] + 1,
+
+                        previousRow[j - 1] + 1,
+
+                        previousDiagonal +
+                            substitutionCost
+
+                    );
+
+
+                previousDiagonal =
+                    current;
+
+            }
+
+        }
+
+
+        return previousRow[
+            second.length
+        ];
+
+    }
+
+
+    /* =====================================================
+       FUZZY WORD MATCH
+    ===================================================== */
+
+    function fuzzyWordMatch(
+        searchWord,
+        targetWord
+    ) {
+
+        if (
+            !searchWord ||
+            !targetWord
+        ) {
+
+            return false;
+
+        }
+
+
+        if (
+            targetWord.includes(searchWord) ||
+            searchWord.includes(targetWord)
+        ) {
+
+            return true;
+
+        }
+
+
+        const lengthDifference =
+            Math.abs(
+                searchWord.length -
+                targetWord.length
+            );
+
+
+        if (
+            lengthDifference > 2
+        ) {
+
+            return false;
+
+        }
+
+
+        let allowedDistance = 1;
+
+
+        if (
+            searchWord.length >= 6
+        ) {
+
+            allowedDistance = 2;
+
+        }
+
+
+        return (
+            levenshteinDistance(
+                searchWord,
+                targetWord
+            ) <= allowedDistance
+        );
+
+    }
+
+
+    /* =====================================================
+       GET SEARCH VARIATIONS
+    ===================================================== */
+
+    function getSearchVariations(term) {
+
+        const normalized =
+            normalizeSearchText(term);
+
+
+        const variations =
+            new Set();
+
+
+        if (normalized) {
+
+            variations.add(
+                normalized
+            );
+
+        }
+
+
+        Object.entries(
+            searchAliases
+        ).forEach(
+            ([alias, values]) => {
+
+                const normalizedValues =
+                    values.map(
+                        value =>
+                            normalizeSearchText(
+                                value
+                            )
+                    );
+
+
+                if (
+                    alias === normalized ||
+                    normalizedValues.includes(
+                        normalized
+                    )
+                ) {
+
+                    variations.add(alias);
+
+                    values.forEach(value => {
+
+                        const cleanValue =
+                            normalizeSearchText(
+                                value
+                            );
+
+                        if (cleanValue) {
+
+                            variations.add(
+                                cleanValue
+                            );
+
+                        }
+
+                    });
+
+                }
+
+            }
+        );
+
+
+        return Array.from(
+            variations
+        );
+
+    }
+
+
+    /* =====================================================
+       SEARCH TERM MATCH
+    ===================================================== */
+
+    function searchTermMatches(
+        term,
+        searchableText
+    ) {
+
+        const normalizedText =
+            normalizeSearchText(
+                searchableText
+            );
+
+
+        if (!term) {
+
+            return true;
+
+        }
+
+
+        const variations =
+            getSearchVariations(term);
+
+
+        const textWords =
+            normalizedText
+                .split(/\s+/)
+                .filter(Boolean);
+
+
+        return variations.some(
+            variation => {
+
+                if (!variation) {
+
+                    return false;
+
+                }
+
+
+                if (
+                    normalizedText.includes(
+                        variation
+                    )
+                ) {
+
+                    return true;
+
+                }
+
+
+                const variationWords =
+                    variation
+                        .split(/\s+/)
+                        .filter(Boolean);
+
+
+                return variationWords.every(
+                    variationWord =>
+                        textWords.some(
+                            textWord =>
+                                fuzzyWordMatch(
+                                    variationWord,
+                                    textWord
+                                )
+                        )
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       BUILD SEARCH TERMS
+    ===================================================== */
+
+    function buildSearchTerms(value) {
+
+        const normalized =
+            normalizeSearchPhrases(
+                value
+            );
+
+
+        if (!normalized) {
+
+            return [];
+
+        }
+
+
+        return normalized
+            .split(/\s+/)
+            .map(term =>
+                term.trim()
+            )
+            .filter(term =>
+                term &&
+                !ignoredSearchWords.has(term)
+            );
+
+    }
+
+
+    /* =====================================================
+       PERFORM RICH SEARCH
+    ===================================================== */
+
+    function performSearch() {
+
+        if (
+            !latestJobs ||
+            !searchInput
+        ) {
+
+            return;
+
+        }
+
+
+        const rawSearchValue =
+            searchInput.value || "";
+
+
         const searchTerms =
-            searchValue
-                ? searchValue
-                    .split(" ")
-                    .filter(Boolean)
-                : [];
+            buildSearchTerms(
+                rawSearchValue
+            );
 
 
         const jobCards =
@@ -914,17 +1567,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         jobCards.forEach(card => {
 
             const searchableText =
-                normalizeSearchText(
-                    card.dataset.search ||
-                    ""
-                );
+                card.dataset.search ||
+                "";
 
 
             const matches =
                 searchTerms.length === 0 ||
                 searchTerms.every(
                     term =>
-                        searchableText.includes(term)
+                        searchTermMatches(
+                            term,
+                            searchableText
+                        )
                 );
 
 
@@ -951,7 +1605,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
     }
-
+        /* =====================================================
+       SEARCH EVENTS
+    ===================================================== */
 
     if (
         searchForm &&
@@ -1103,6 +1759,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                             "href"
                         );
 
+
                     if (
                         target &&
                         target.startsWith("#")
@@ -1114,6 +1771,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 document.querySelector(
                                     target
                                 );
+
 
                             if (section) {
 
@@ -1159,16 +1817,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     /* =====================================================
-       LOAD EVERYTHING
-    ===================================================== */
-
-    await loadJobs();
-
-
-    /* =====================================================
        FINAL REVEAL
     ===================================================== */
 
     setupRevealObserver();
+
 
 });
