@@ -2,22 +2,35 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta
         name="robots"
-        content="index, follow"
+        content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    >
+
+    <meta
+        name="googlebot"
+        content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    >
+
+    <meta
+        name="author"
+        content="JobsBhandar"
+    >
+
+    <meta
+        name="theme-color"
+        content="#6948d9"
     >
 
     <meta
         name="description"
         id="jobMetaDescription"
-        content="View complete job details on JobsBhandar."
+        content="View complete job details, eligibility, salary, location, qualification, experience and application information on JobsBhandar."
     >
 
     <link
@@ -32,6 +45,16 @@
     >
 
     <meta
+        property="og:site_name"
+        content="JobsBhandar"
+    >
+
+    <meta
+        property="og:locale"
+        content="en_IN"
+    >
+
+    <meta
         property="og:title"
         id="ogJobTitle"
         content="Job Details — JobsBhandar"
@@ -40,13 +63,30 @@
     <meta
         property="og:description"
         id="ogJobDescription"
-        content="View complete job details on JobsBhandar."
+        content="View complete job details and application information on JobsBhandar."
     >
 
     <meta
         property="og:url"
         id="ogJobUrl"
         content="https://jobsbhandar.in/job-details.html"
+    >
+
+    <meta
+        name="twitter:card"
+        content="summary"
+    >
+
+    <meta
+        name="twitter:title"
+        id="twitterJobTitle"
+        content="Job Details — JobsBhandar"
+    >
+
+    <meta
+        name="twitter:description"
+        id="twitterJobDescription"
+        content="View complete job details and application information on JobsBhandar."
     >
 
     <title id="pageTitle">
@@ -59,10 +99,6 @@
     >
 
     <style>
-        /* =====================================================
-           JOB DETAILS PAGE
-           Uses the existing JobsBhandar design language
-        ===================================================== */
 
         .job-details-wrapper {
             max-width: 900px;
@@ -95,17 +131,20 @@
             margin: 0 0 10px;
             font-size: 32px;
             line-height: 1.25;
+            overflow-wrap: anywhere;
         }
 
         .job-details-company {
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 5px;
+            overflow-wrap: anywhere;
         }
 
         .job-details-location {
             font-size: 15px;
             opacity: 0.75;
+            overflow-wrap: anywhere;
         }
 
         .job-details-meta {
@@ -119,6 +158,7 @@
             padding: 17px;
             border-radius: 12px;
             background: #f7f9fc;
+            min-width: 0;
         }
 
         .job-detail-label {
@@ -131,19 +171,101 @@
         .job-detail-value {
             font-size: 15px;
             font-weight: 600;
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
 
         .job-description {
-            margin-top: 30px;
+            margin-top: 35px;
         }
 
         .job-description h2 {
-            margin-bottom: 12px;
+            margin-bottom: 20px;
         }
 
         .job-description-content {
+            font-size: 15px;
             line-height: 1.8;
-            white-space: pre-line;
+            overflow-wrap: anywhere;
+        }
+
+        .job-description-content h2,
+        .job-description-content h3,
+        .job-description-content h4 {
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        .job-description-content ul,
+        .job-description-content ol {
+            padding-left: 25px;
+            margin: 12px 0;
+        }
+
+        .job-description-content li {
+            margin-bottom: 7px;
+        }
+
+        .job-description-content a {
+            word-break: break-word;
+        }
+
+        .job-description-content code {
+            padding: 2px 6px;
+            border-radius: 5px;
+            background: #f1f3f6;
+            font-size: 13px;
+        }
+
+        .job-description-content .description-table-wrapper {
+            width: 100%;
+            margin: 20px 0 25px;
+            overflow-x: auto;
+            border: 1px solid #e7ebf1;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+
+        .job-description-content table {
+            width: 100%;
+            min-width: 560px;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .job-description-content th {
+            padding: 12px 14px;
+            text-align: left;
+            background: #f1f5fb;
+            color: #172033;
+            font-weight: 750;
+            border-bottom: 1px solid #e1e6ee;
+        }
+
+        .job-description-content td {
+            padding: 11px 14px;
+            vertical-align: top;
+            border-bottom: 1px solid #e7ebf1;
+        }
+
+        .job-description-content tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .job-description-content blockquote {
+            margin: 18px 0;
+            padding: 12px 16px;
+            border-left: 4px solid #6948d9;
+            border-radius: 8px;
+            background: #f7f9fc;
+            color: #667085;
+        }
+
+        .description-empty {
+            padding: 18px;
+            border-radius: 12px;
+            background: #f7f9fc;
+            color: #667085;
         }
 
         .job-details-actions {
@@ -180,10 +302,44 @@
             margin-bottom: 10px;
         }
 
+        .job-seo-content {
+            margin-top: 25px;
+            padding: 22px;
+            border-radius: 14px;
+            background: #f8f9fc;
+        }
+
+        .job-seo-content h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+
+        .job-seo-content p {
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        .job-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .job-keyword {
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            font-size: 12px;
+        }
+
         @media (max-width: 650px) {
 
             .job-details-wrapper {
                 margin-top: 25px;
+                padding-left: 14px;
+                padding-right: 14px;
             }
 
             .job-details-card {
@@ -198,6 +354,19 @@
                 grid-template-columns: 1fr;
             }
 
+            .job-description-content {
+                font-size: 14px;
+                line-height: 1.7;
+            }
+
+            .job-description-content h3 {
+                font-size: 18px;
+            }
+
+            .job-description-content h4 {
+                font-size: 15px;
+            }
+
             .job-details-actions {
                 flex-direction: column;
             }
@@ -208,94 +377,282 @@
                 width: 100%;
                 box-sizing: border-box;
             }
-        }
-    </style>
-</head>
 
+        }
+
+    </style>
+
+    <script
+        type="application/ld+json"
+        id="jobStructuredData"
+    >
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebSite",
+                "@id": "https://jobsbhandar.in/#website",
+                "url": "https://jobsbhandar.in/",
+                "name": "JobsBhandar",
+                "description": "Government Jobs, Private Jobs, Internships and Work From Home opportunities in India."
+            },
+            {
+                "@type": "WebPage",
+                "@id": "https://jobsbhandar.in/job-details.html",
+                "url": "https://jobsbhandar.in/job-details.html",
+                "name": "Job Details — JobsBhandar",
+                "isPartOf": {
+                    "@id": "https://jobsbhandar.in/#website"
+                }
+            }
+        ]
+    }
+    </script>
+
+</head>
 
 <body>
 
-    <!-- =====================================================
-         HEADER
-    ===================================================== -->
+<header>
 
-    <header>
+    <div class="container">
 
-        <div class="container">
+        <a
+            href="index.html"
+            class="logo"
+        >
+            JobsBhandar
+        </a>
 
-            <a
-                href="index.html"
-                class="logo"
-            >
-                JobsBhandar
+        <nav>
+
+            <a href="index.html">
+                Home
             </a>
 
-            <nav>
+            <a href="index.html#latestJobs">
+                Latest Jobs
+            </a>
 
-                <a href="index.html">
-                    Home
-                </a>
+            <a href="index.html#government">
+                Government
+            </a>
 
-                <a href="index.html#latestJobs">
-                    Latest Jobs
-                </a>
+            <a href="index.html#private">
+                Private
+            </a>
 
-                <a href="index.html#governmentJobs">
-                    Government
-                </a>
+            <a href="index.html#internships">
+                Internships
+            </a>
 
-                <a href="index.html#privateJobs">
-                    Private
-                </a>
+            <a href="index.html#work-from-home">
+                Work From Home
+            </a>
 
-                <a href="index.html#internships">
-                    Internships
-                </a>
+        </nav>
 
-                <a href="index.html#workFromHome">
-                    Work From Home
-                </a>
+    </div>
 
-            </nav>
+</header>
+
+<main>
+
+    <div
+        class="job-details-wrapper"
+        id="jobDetailsWrapper"
+    >
+
+        <div
+            class="job-loading"
+            id="jobLoading"
+        >
+
+            <h2>
+                Loading job details...
+            </h2>
 
         </div>
 
-    </header>
-
-
-    <!-- =====================================================
-         MAIN JOB DETAILS
-    ===================================================== -->
-
-    <main>
-
         <div
-            class="job-details-wrapper"
-            id="jobDetailsWrapper"
+            class="job-error"
+            id="jobError"
+            hidden
         >
 
-            <div
-                class="job-loading"
-                id="jobLoading"
-            >
-                <h2>
-                    Loading job details...
-                </h2>
-            </div>
+            <h1>
+                Job Not Found
+            </h1>
 
+            <p>
+                This job may have been removed or is no longer available.
+            </p>
 
-            <div
-                class="job-error"
-                id="jobError"
-                hidden
+            <a
+                href="index.html"
+                class="job-details-back"
             >
-                <h1>
-                    Job Not Found
+                ← Back to Jobs
+            </a>
+
+        </div>
+
+        <article
+            class="job-details-card"
+            id="jobCard"
+            hidden
+        >
+
+            <div class="job-details-header">
+
+                <span
+                    class="job-details-category"
+                    id="jobCategory"
+                >
+                    Job
+                </span>
+
+                <h1
+                    class="job-details-title"
+                    id="jobTitle"
+                >
+                    Job Title
                 </h1>
 
-                <p>
-                    This job may have been removed or is no longer available.
+                <div
+                    class="job-details-company"
+                    id="jobCompany"
+                >
+                    Company
+                </div>
+
+                <div
+                    class="job-details-location"
+                    id="jobLocation"
+                >
+                    Location
+                </div>
+
+            </div>
+
+            <div class="job-details-meta">
+
+                <div class="job-detail-item">
+
+                    <span class="job-detail-label">
+                        Job Type
+                    </span>
+
+                    <span
+                        class="job-detail-value"
+                        id="jobType"
+                    >
+                        Not specified
+                    </span>
+
+                </div>
+
+                <div class="job-detail-item">
+
+                    <span class="job-detail-label">
+                        Salary
+                    </span>
+
+                    <span
+                        class="job-detail-value"
+                        id="jobSalary"
+                    >
+                        Not specified
+                    </span>
+
+                </div>
+
+                <div class="job-detail-item">
+
+                    <span class="job-detail-label">
+                        Qualification
+                    </span>
+
+                    <span
+                        class="job-detail-value"
+                        id="jobQualification"
+                    >
+                        Not specified
+                    </span>
+
+                </div>
+
+                <div class="job-detail-item">
+
+                    <span class="job-detail-label">
+                        Experience
+                    </span>
+
+                    <span
+                        class="job-detail-value"
+                        id="jobExperience"
+                    >
+                        Not specified
+                    </span>
+
+                </div>
+
+                <div class="job-detail-item">
+
+                    <span class="job-detail-label">
+                        Last Date
+                    </span>
+
+                    <span
+                        class="job-detail-value"
+                        id="jobLastDate"
+                    >
+                        Apply soon
+                    </span>
+
+                </div>
+
+            </div>
+
+            <section class="job-description">
+
+                <h2>
+                    Job Description
+                </h2>
+
+                <div
+                    class="job-description-content"
+                    id="jobDescription"
+                >
+                    <div class="description-empty">
+                        Job description not available.
+                    </div>
+                </div>
+
+            </section>
+
+            <section
+                class="job-seo-content"
+                id="jobSeoContent"
+                hidden
+            >
+
+                <h2>
+                    Job Information
+                </h2>
+
+                <p id="jobSeoSummary">
+                    Find complete job information, eligibility details, salary, location, qualification, experience and application details on JobsBhandar.
                 </p>
+
+                <div
+                    class="job-keywords"
+                    id="jobKeywords"
+                ></div>
+
+            </section>
+
+            <div class="job-details-actions">
 
                 <a
                     href="index.html"
@@ -303,687 +660,1437 @@
                 >
                     ← Back to Jobs
                 </a>
+
+                <a
+                    href="#"
+                    class="job-details-apply"
+                    id="applyButton"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Apply Now
+                </a>
+
             </div>
 
+        </article>
 
-            <article
-                class="job-details-card"
-                id="jobCard"
-                hidden
-            >
+    </div>
 
-                <div class="job-details-header">
+</main>
 
-                    <span
-                        class="job-details-category"
-                        id="jobCategory"
-                    >
-                        Job
-                    </span>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-                    <h1
-                        class="job-details-title"
-                        id="jobTitle"
-                    >
-                        Job Opportunity
-                    </h1>
+<script src="supabase-client.js"></script>
+<script>
 
-                    <div
-                        class="job-details-company"
-                        id="jobCompany"
-                    >
-                        Company
-                    </div>
+    document.addEventListener(
+        "DOMContentLoaded",
+        async () => {
 
-                    <div
-                        class="job-details-location"
-                        id="jobLocation"
-                    >
-                        India
-                    </div>
+            const loading =
+                document.getElementById("jobLoading");
 
-                </div>
+            const errorBox =
+                document.getElementById("jobError");
 
+            const jobCard =
+                document.getElementById("jobCard");
 
-                <div class="job-details-meta">
+            const jobSeoContent =
+                document.getElementById("jobSeoContent");
 
-                    <div class="job-detail-item">
+            const jobKeywords =
+                document.getElementById("jobKeywords");
 
-                        <span class="job-detail-label">
-                            Job Type
-                        </span>
 
-                        <span
-                            class="job-detail-value"
-                            id="jobType"
-                        >
-                            Not specified
-                        </span>
+            function escapeHtml(value) {
 
-                    </div>
+                return String(value ?? "")
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
 
+            }
 
-                    <div class="job-detail-item">
 
-                        <span class="job-detail-label">
-                            Salary
-                        </span>
+            function cleanText(value) {
 
-                        <span
-                            class="job-detail-value"
-                            id="jobSalary"
-                        >
-                            Not specified
-                        </span>
+                return String(value ?? "")
+                    .replace(/\s+/g, " ")
+                    .trim();
 
-                    </div>
+            }
 
 
-                    <div class="job-detail-item">
+            function safeUrl(url) {
 
-                        <span class="job-detail-label">
-                            Qualification
-                        </span>
+                const value =
+                    String(url ?? "").trim();
 
-                        <span
-                            class="job-detail-value"
-                            id="jobQualification"
-                        >
-                            Not specified
-                        </span>
-
-                    </div>
-
-
-                    <div class="job-detail-item">
-
-                        <span class="job-detail-label">
-                            Experience
-                        </span>
-
-                        <span
-                            class="job-detail-value"
-                            id="jobExperience"
-                        >
-                            Not specified
-                        </span>
-
-                    </div>
-
-
-                    <div class="job-detail-item">
-
-                        <span class="job-detail-label">
-                            Last Date
-                        </span>
-
-                        <span
-                            class="job-detail-value"
-                            id="jobLastDate"
-                        >
-                            Apply soon
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <section class="job-description">
-
-                    <h2>
-                        Job Description
-                    </h2>
-
-                    <div
-                        class="job-description-content"
-                        id="jobDescription"
-                    >
-                        Job description not available.
-                    </div>
-
-                </section>
-
-
-                <div class="job-details-actions">
-
-                    <a
-                        href="index.html"
-                        class="job-details-back"
-                    >
-                        ← Back to Jobs
-                    </a>
-
-                    <a
-                        href="#"
-                        class="job-details-apply"
-                        id="applyButton"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Apply Now
-                    </a>
-
-                </div>
-
-            </article>
-
-        </div>
-
-    </main>
-
-
-    <!-- =====================================================
-         SUPABASE
-    ===================================================== -->
-
-    <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-    ></script>
-
-    <script src="supabase-client.js"></script>
-
-
-    <!-- =====================================================
-         JOB DETAILS SCRIPT
-    ===================================================== -->
-
-    <script>
-
-        document.addEventListener(
-            "DOMContentLoaded",
-            async () => {
-
-                const loading =
-                    document.getElementById(
-                        "jobLoading"
-                    );
-
-                const errorBox =
-                    document.getElementById(
-                        "jobError"
-                    );
-
-                const jobCard =
-                    document.getElementById(
-                        "jobCard"
-                    );
-
-
-                /*
-                 * Get job ID from URL
-                 *
-                 * Example:
-                 * job-details.html?id=123
-                 */
-
-                const params =
-                    new URLSearchParams(
-                        window.location.search
-                    );
-
-                const jobId =
-                    params.get("id");
-
-
-                if (!jobId) {
-
-                    loading.hidden = true;
-                    errorBox.hidden = false;
-
-                    return;
+                if (!value) {
+                    return "";
                 }
-
-
-                /*
-                 * Check Supabase connection
-                 */
-
-                if (
-                    typeof supabaseClient === "undefined" ||
-                    !supabaseClient
-                ) {
-
-                    console.error(
-                        "Supabase client not found."
-                    );
-
-                    loading.hidden = true;
-                    errorBox.hidden = false;
-
-                    return;
-                }
-
 
                 try {
 
-                    const {
-                        data: job,
-                        error
-                    } = await supabaseClient
-                        .from("jobs")
-                        .select("*")
-                        .eq("id", jobId)
-                        .eq("is_active", true)
-                        .maybeSingle();
-
-
-                    if (error) {
-
-                        console.error(
-                            "Failed to load job:",
-                            error
-                        );
-
-                        loading.hidden = true;
-                        errorBox.hidden = false;
-
-                        return;
-                    }
-
-
-                    if (!job) {
-
-                        loading.hidden = true;
-                        errorBox.hidden = false;
-
-                        return;
-                    }
-
-
-                    /*
-                     * Safe values
-                     */
-
-                    const title =
-                        job.title ||
-                        "Job Opportunity";
-
-                    const company =
-                        job.company ||
-                        "Company";
-
-                    const location =
-                        job.location ||
-                        "India";
-
-                    const category =
-                        job.category ||
-                        "Job";
-
-                    const jobType =
-                        job.job_type ||
-                        "Not specified";
-
-                    const salary =
-                        job.salary ||
-                        "Salary not specified";
-
-                    const qualification =
-                        job.qualification ||
-                        "Qualification not specified";
-
-                    const experience =
-                        job.experience ||
-                        "Experience not specified";
-
-                    const lastDate =
-                        job.last_date ||
-                        "Apply soon";
-
-                    const description =
-                        job.description ||
-                        "Job description not available.";
-
-                    const applyLink =
-                        job.apply_link ||
-                        "#";
-
-
-                    /*
-                     * Fill page
-                     */
-
-                    document.getElementById(
-                        "jobCategory"
-                    ).textContent = category;
-
-                    document.getElementById(
-                        "jobTitle"
-                    ).textContent = title;
-
-                    document.getElementById(
-                        "jobCompany"
-                    ).textContent = company;
-
-                    document.getElementById(
-                        "jobLocation"
-                    ).textContent =
-                        "📍 " + location;
-
-                    document.getElementById(
-                        "jobType"
-                    ).textContent = jobType;
-
-                    document.getElementById(
-                        "jobSalary"
-                    ).textContent = salary;
-
-                    document.getElementById(
-                        "jobQualification"
-                    ).textContent =
-                        qualification;
-
-                    document.getElementById(
-                        "jobExperience"
-                    ).textContent = experience;
-
-                    document.getElementById(
-                        "jobLastDate"
-                    ).textContent = lastDate;
-
-                    document.getElementById(
-                        "jobDescription"
-                    ).textContent = description;
-
-
-                    /*
-                     * Apply button
-                     */
-
-                    const applyButton =
-                        document.getElementById(
-                            "applyButton"
-                        );
+                    const parsed =
+                        new URL(value);
 
                     if (
-                        applyLink &&
-                        applyLink !== "#"
+                        parsed.protocol === "http:" ||
+                        parsed.protocol === "https:"
                     ) {
-
-                        applyButton.href =
-                            applyLink;
-
-                    } else {
-
-                        applyButton.href =
-                            "#";
-
-                        applyButton.addEventListener(
-                            "click",
-                            event => {
-
-                                event.preventDefault();
-
-                                alert(
-                                    "Application link is not available for this job."
-                                );
-
-                            }
-                        );
-
+                        return parsed.href;
                     }
 
+                } catch (error) {
 
-                    /*
-                     * SEO
-                     */
+                    return "";
 
-                    const seoTitle =
-                        title +
-                        " — " +
-                        company +
-                        " | JobsBhandar";
+                }
 
-                    const seoDescription =
-                        "Apply for " +
-                        title +
-                        " at " +
-                        company +
-                        ". Location: " +
-                        location +
-                        ". Find job details, qualification, experience, salary and last date on JobsBhandar.";
+                return "";
+
+            }
 
 
-                    document.title =
-                        seoTitle;
+            function formatDescription(text) {
 
+                const value =
+                    String(text ?? "")
+                        .replace(/\r\n/g, "\n")
+                        .replace(/\r/g, "\n")
+                        .trim();
 
-                    document
-                        .getElementById(
-                            "jobMetaDescription"
-                        )
-                        .setAttribute(
-                            "content",
-                            seoDescription
-                        );
+                if (!value) {
 
-
-                    const currentUrl =
-                        window.location.href;
-
-
-                    document
-                        .getElementById(
-                            "jobCanonical"
-                        )
-                        .setAttribute(
-                            "href",
-                            currentUrl
-                        );
-
-
-                    document
-                        .getElementById(
-                            "ogJobTitle"
-                        )
-                        .setAttribute(
-                            "content",
-                            seoTitle
-                        );
-
-
-                    document
-                        .getElementById(
-                            "ogJobDescription"
-                        )
-                        .setAttribute(
-                            "content",
-                            seoDescription
-                        );
-
-
-                    document
-                        .getElementById(
-                            "ogJobUrl"
-                        )
-                        .setAttribute(
-                            "content",
-                            currentUrl
-                        );
-
-                    /*
-                     * Google JobPosting structured data
-                     */
-
-                    const oldJobSchema =
-                        document.getElementById("jobPostingSchema");
-
-                    if (oldJobSchema) {
-                        oldJobSchema.remove();
-                    }
-
-                    let validThrough = null;
-
-                    if (job.last_date) {
-                        const parsedLastDate =
-                            new Date(job.last_date);
-
-                        if (
-                            !Number.isNaN(
-                                parsedLastDate.getTime()
-                            )
-                        ) {
-                            validThrough =
-                                parsedLastDate.toISOString();
-                        }
-                    }
-
-                    /*
-                     * Do not add JobPosting schema
-                     * if the job has expired.
-                     */
-
-                    const isExpired =
-                        validThrough &&
-                        new Date(validThrough) < new Date();
-
-                    if (!isExpired) {
-
-                        const jobSchema = {
-                            "@context":
-                                "https://schema.org",
-
-                            "@type":
-                                "JobPosting",
-
-                            "title":
-                                title,
-
-                            "description":
-                                description,
-
-                            "datePosted":
-                                job.created_at
-                                    ? new Date(
-                                        job.created_at
-                                    ).toISOString()
-                                    : new Date().toISOString(),
-
-                            "hiringOrganization": {
-                                "@type":
-                                    "Organization",
-
-                                "name":
-                                    company
-                            },
-
-                            "jobLocation": {
-                                "@type":
-                                    "Place",
-
-                                "address": {
-                                    "@type":
-                                        "PostalAddress",
-
-                                    "addressLocality":
-                                        location,
-
-                                    "addressCountry":
-                                        "IN"
-                                }
-                            }
-                        };
-
-                        if (validThrough) {
-                            jobSchema.validThrough =
-                                validThrough;
-                        }
-
-                        const employmentMap = {
-                            "full time":
-                                "FULL_TIME",
-
-                            "full-time":
-                                "FULL_TIME",
-
-                            "part time":
-                                "PART_TIME",
-
-                            "part-time":
-                                "PART_TIME",
-
-                            "contract":
-                                "CONTRACTOR",
-
-                            "contractor":
-                                "CONTRACTOR",
-
-                            "temporary":
-                                "TEMPORARY",
-
-                            "intern":
-                                "INTERN",
-
-                            "internship":
-                                "INTERN",
-
-                            "volunteer":
-                                "VOLUNTEER",
-
-                            "per diem":
-                                "PER_DIEM"
-                        };
-
-                        const jobTypeText =
-                            String(jobType || "")
-                                .trim()
-                                .toLowerCase();
-
-                        if (
-                            employmentMap[jobTypeText]
-                        ) {
-                            jobSchema.employmentType =
-                                employmentMap[
-                                    jobTypeText
-                                ];
-                        }
-
-                        const schemaScript =
-                            document.createElement(
-                                "script"
-                            );
-
-                        schemaScript.type =
-                            "application/ld+json";
-
-                        schemaScript.id =
-                            "jobPostingSchema";
-
-                        schemaScript.textContent =
-                            JSON.stringify(
-                                jobSchema
-                            );
-
-                        document.head.appendChild(
-                            schemaScript
-                        );
-                    }
-                    /*
-                     * Show page
-                     */
-
-                    loading.hidden = true;
-                    jobCard.hidden = false;
-
-
-                } catch (err) {
-
-                    console.error(
-                        "Unexpected error:",
-                        err
+                    return (
+                        '<div class="description-empty">' +
+                        'Job description not available.' +
+                        "</div>"
                     );
 
-                    loading.hidden = true;
-                    errorBox.hidden = false;
+                }
+
+                const lines =
+                    value.split("\n");
+
+                let html = "";
+                let inList = false;
+                let listType = "";
+
+                function closeList() {
+
+                    if (inList) {
+
+                        html +=
+                            listType === "ol"
+                                ? "</ol>"
+                                : "</ul>";
+
+                        inList = false;
+                        listType = "";
+
+                    }
+
+                }
+
+                for (let i = 0; i < lines.length; i++) {
+
+                    const rawLine =
+                        lines[i];
+
+                    const line =
+                        rawLine.trim();
+
+                    if (!line) {
+
+                        closeList();
+
+                        continue;
+
+                    }
+
+
+                    if (
+                        /^\d+[\.\)]\s+/.test(line)
+                    ) {
+
+                        if (!inList || listType !== "ol") {
+
+                            closeList();
+
+                            html += "<ol>";
+
+                            inList = true;
+                            listType = "ol";
+
+                        }
+
+                        const item =
+                            line.replace(
+                                /^\d+[\.\)]\s+/,
+                                ""
+                            );
+
+                        html +=
+                            "<li>" +
+                            formatInline(item) +
+                            "</li>";
+
+                        continue;
+
+                    }
+
+
+                    if (
+                        /^[-*•]\s+/.test(line)
+                    ) {
+
+                        if (!inList || listType !== "ul") {
+
+                            closeList();
+
+                            html += "<ul>";
+
+                            inList = true;
+                            listType = "ul";
+
+                        }
+
+                        const item =
+                            line.replace(
+                                /^[-*•]\s+/,
+                                ""
+                            );
+
+                        html +=
+                            "<li>" +
+                            formatInline(item) +
+                            "</li>";
+
+                        continue;
+
+                    }
+
+
+                    closeList();
+
+
+                    if (
+                        /^#{1,4}\s+/.test(line)
+                    ) {
+
+                        const match =
+                            line.match(
+                                /^(#{1,4})\s+(.+)$/
+                            );
+
+                        const level =
+                            match[1].length;
+
+                        html +=
+                            "<h" +
+                            level +
+                            ">" +
+                            formatInline(match[2]) +
+                            "</h" +
+                            level +
+                            ">";
+
+                        continue;
+
+                    }
+
+
+                    html +=
+                        "<p>" +
+                        formatInline(line) +
+                        "</p>";
+
+                }
+
+                closeList();
+
+                return html;
+
+            }
+
+
+            function formatInline(text) {
+
+                let value =
+                    escapeHtml(text);
+
+
+                value =
+                    value.replace(
+                        /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/gi,
+                        (match, label, url) => {
+
+                            const safe =
+                                safeUrl(url);
+
+                            if (!safe) {
+                                return label;
+                            }
+
+                            return (
+                                '<a href="' +
+                                safe +
+                                '" target="_blank" rel="noopener noreferrer">' +
+                                label +
+                                "</a>"
+                            );
+
+                        }
+                    );
+
+
+                value =
+                    value.replace(
+                        /\*\*(.+?)\*\*/g,
+                        "<strong>$1</strong>"
+                    );
+
+
+                value =
+                    value.replace(
+                        /`([^`]+)`/g,
+                        "<code>$1</code>"
+                    );
+
+
+                value =
+                    value.replace(
+                        /(^|[\s>])(https?:\/\/[^\s<]+)/gi,
+                        (match, prefix, url) => {
+
+                            const cleanUrl =
+                                url.replace(
+                                    /[),.;]+$/g,
+                                    ""
+                                );
+
+                            const safe =
+                                safeUrl(cleanUrl);
+
+                            if (!safe) {
+                                return match;
+                            }
+
+                            const ending =
+                                url.substring(
+                                    cleanUrl.length
+                                );
+
+                            return (
+                                prefix +
+                                '<a href="' +
+                                safe +
+                                '" target="_blank" rel="noopener noreferrer">' +
+                                cleanUrl +
+                                "</a>" +
+                                ending
+                            );
+
+                        }
+                    );
+
+
+                return value;
+
+            }
+
+
+            function getEmploymentType(jobType) {
+
+                const value =
+                    cleanText(jobType)
+                        .toLowerCase();
+
+                if (
+                    value.includes("full")
+                ) {
+                    return "FULL_TIME";
+                }
+
+                if (
+                    value.includes("part")
+                ) {
+                    return "PART_TIME";
+                }
+
+                if (
+                    value.includes("intern")
+                ) {
+                    return "INTERN";
+                }
+
+                if (
+                    value.includes("contract")
+                ) {
+                    return "CONTRACTOR";
+                }
+
+                if (
+                    value.includes("temporary")
+                ) {
+                    return "TEMPORARY";
+                }
+
+                if (
+                    value.includes("volunteer")
+                ) {
+                    return "VOLUNTEER";
+                }
+
+                return "OTHER";
+
+            }
+
+
+            function getDateOnly(value) {
+
+                if (!value) {
+                    return "";
+                }
+
+                const stringValue =
+                    String(value).trim();
+
+                const match =
+                    stringValue.match(
+                        /^\d{4}-\d{2}-\d{2}/
+                    );
+
+                if (match) {
+                    return match[0];
+                }
+
+                const date =
+                    new Date(stringValue);
+
+                if (
+                    Number.isNaN(
+                        date.getTime()
+                    )
+                ) {
+                    return "";
+                }
+
+                return date
+                    .toISOString()
+                    .split("T")[0];
+
+            }
+
+
+            function createJobPostingSchema(job) {
+
+                const title =
+                    cleanText(job.title);
+
+                const company =
+                    cleanText(job.company);
+
+                const location =
+                    cleanText(job.location);
+
+                const description =
+                    cleanText(job.description);
+
+                const qualification =
+                    cleanText(job.qualification);
+
+                const experience =
+                    cleanText(job.experience);
+
+                const salary =
+                    cleanText(job.salary);
+
+                const jobType =
+                    cleanText(job.job_type);
+
+                const category =
+                    cleanText(job.category);
+
+                const lastDate =
+                    getDateOnly(job.last_date);
+
+                const pageUrl =
+                    window.location.href.split("#")[0];
+
+
+                const schema = {
+
+                    "@type": "JobPosting",
+
+                    "@id":
+                        pageUrl + "#job",
+
+                    "title":
+                        title,
+
+                    "description":
+                        description ||
+                        "Job opportunity listed on JobsBhandar.",
+
+                    "url":
+                        pageUrl,
+
+                    "datePosted":
+                        getDateOnly(job.created_at) ||
+                        new Date().toISOString().split("T")[0],
+
+                    "employmentType":
+                        getEmploymentType(jobType),
+
+                    "hiringOrganization": {
+
+                        "@type":
+                            "Organization",
+
+                        "name":
+                            company || "Company"
+
+                    }
+
+                };
+
+
+                if (lastDate) {
+
+                    schema.validThrough =
+                        lastDate;
+
+                }
+
+
+                if (location) {
+
+                    const locationParts =
+                        location.split(",")
+                            .map(item => item.trim())
+                            .filter(Boolean);
+
+                    schema.jobLocation = {
+
+                        "@type":
+                            "Place",
+
+                        "address": {
+
+                            "@type":
+                                "PostalAddress",
+
+                            "addressLocality":
+                                locationParts[0] ||
+                                location,
+
+                            "addressCountry":
+                                "IN"
+
+                        }
+
+                    };
+
+                }
+
+
+                if (
+                    job.salary &&
+                    cleanText(job.salary)
+                ) {
+
+                    schema.baseSalary = {
+
+                        "@type":
+                            "MonetaryAmount",
+
+                        "currency":
+                            "INR",
+
+                        "value": {
+
+                            "@type":
+                                "QuantitativeValue",
+
+                            "description":
+                                salary
+
+                        }
+
+                    };
+
+                }
+
+
+                if (
+                    qualification
+                ) {
+
+                    schema.qualifications =
+                        qualification;
+
+                }
+
+
+                if (
+                    experience
+                ) {
+
+                    schema.experienceRequirements =
+                        experience;
+
+                }
+
+
+                if (
+                    category
+                ) {
+
+                    schema.industry =
+                        category;
+
+                }
+
+
+                if (
+                    /work\s*from\s*home|remote/i.test(
+                        location + " " + jobType
+                    )
+                ) {
+
+                    schema.jobLocationType =
+                        "TELECOMMUTE";
+
+                }
+
+
+                if (
+                    job.apply_link
+                ) {
+
+                    const applyUrl =
+                        safeUrl(
+                            job.apply_link
+                        );
+
+                    if (applyUrl) {
+
+                        schema.directApply =
+                            true;
+
+                    }
+
+                }
+
+
+                return schema;
+
+            }
+
+
+            function createBreadcrumbSchema(job) {
+
+                const pageUrl =
+                    window.location.href.split("#")[0];
+
+                return {
+
+                    "@type":
+                        "BreadcrumbList",
+
+                    "@id":
+                        pageUrl +
+                        "#breadcrumb",
+
+                    "itemListElement": [
+
+                        {
+
+                            "@type":
+                                "ListItem",
+
+                            "position":
+                                1,
+
+                            "name":
+                                "JobsBhandar",
+
+                            "item":
+                                "https://jobsbhandar.in/"
+
+                        },
+
+                        {
+
+                            "@type":
+                                "ListItem",
+
+                            "position":
+                                2,
+
+                            "name":
+                                cleanText(
+                                    job.category
+                                ) ||
+                                "Jobs",
+
+                            "item":
+                                "https://jobsbhandar.in/"
+
+                        },
+
+                        {
+
+                            "@type":
+                                "ListItem",
+
+                            "position":
+                                3,
+
+                            "name":
+                                cleanText(
+                                    job.title
+                                ) ||
+                                "Job Details",
+
+                            "item":
+                                pageUrl
+
+                        }
+
+                    ]
+
+                };
+
+            }
+
+
+            function updateStructuredData(job) {
+
+                const pageUrl =
+                    window.location.href.split("#")[0];
+
+                const schemaElement =
+                    document.getElementById(
+                        "jobStructuredData"
+                    );
+
+                if (!schemaElement) {
+                    return;
+                }
+
+
+                const websiteSchema = {
+
+                    "@type":
+                        "WebSite",
+
+                    "@id":
+                        "https://jobsbhandar.in/#website",
+
+                    "url":
+                        "https://jobsbhandar.in/",
+
+                    "name":
+                        "JobsBhandar",
+
+                    "description":
+                        "Government Jobs, Private Jobs, Internships and Work From Home opportunities in India."
+
+                };
+
+
+                const webpageSchema = {
+
+                    "@type":
+                        "WebPage",
+
+                    "@id":
+                        pageUrl,
+
+                    "url":
+                        pageUrl,
+
+                    "name":
+                        cleanText(
+                            job.title
+                        ) +
+                        " — JobsBhandar",
+
+                    "description":
+                        cleanText(
+                            job.description
+                        ).substring(
+                            0,
+                            300
+                        ),
+
+                    "isPartOf": {
+
+                        "@id":
+                            "https://jobsbhandar.in/#website"
+
+                    },
+
+                    "breadcrumb": {
+
+                        "@id":
+                            pageUrl +
+                            "#breadcrumb"
+
+                    },
+
+                    "mainEntity": {
+
+                        "@id":
+                            pageUrl +
+                            "#job"
+
+                    }
+
+                };
+
+
+                const graph = [
+
+                    websiteSchema,
+
+                    webpageSchema,
+
+                    createJobPostingSchema(
+                        job
+                    ),
+
+                    createBreadcrumbSchema(
+                        job
+                    )
+
+                ];
+
+
+                schemaElement.textContent =
+                    JSON.stringify({
+
+                        "@context":
+                            "https://schema.org",
+
+                        "@graph":
+                            graph
+
+                    });
+
+            }
+
+
+            function updateSeo(job) {
+
+                const title =
+                    cleanText(job.title) ||
+                    "Job Details";
+
+                const company =
+                    cleanText(job.company);
+
+                const location =
+                    cleanText(job.location);
+
+                const category =
+                    cleanText(job.category);
+
+                const qualification =
+                    cleanText(job.qualification);
+
+                const description =
+                    cleanText(job.description);
+
+
+                const seoDescription =
+                    (
+                        title +
+                        (company
+                            ? " at " + company
+                            : "") +
+                        (location
+                            ? " in " + location
+                            : "") +
+                        ". " +
+                        (
+                            description ||
+                            "View complete job details, eligibility, salary, qualification, experience and application information on JobsBhandar."
+                        )
+                    )
+                    .substring(
+                        0,
+                        160
+                    );
+
+
+                const pageTitle =
+                    title +
+                    " — " +
+                    (
+                        company ||
+                        "JobsBhandar"
+                    );
+
+
+                const pageUrl =
+                    window.location.href.split("#")[0];
+
+
+                document.title =
+                    pageTitle;
+
+
+                const titleElement =
+                    document.getElementById(
+                        "pageTitle"
+                    );
+
+                if (titleElement) {
+
+                    titleElement.textContent =
+                        pageTitle;
+
+                }
+
+
+                const descriptionElement =
+                    document.getElementById(
+                        "jobMetaDescription"
+                    );
+
+                if (descriptionElement) {
+
+                    descriptionElement.setAttribute(
+                        "content",
+                        seoDescription
+                    );
+
+                }
+
+
+                const canonicalElement =
+                    document.getElementById(
+                        "jobCanonical"
+                    );
+
+                if (canonicalElement) {
+
+                    canonicalElement.setAttribute(
+                        "href",
+                        pageUrl
+                    );
+
+                }
+
+
+                const ogTitle =
+                    document.getElementById(
+                        "ogJobTitle"
+                    );
+
+                if (ogTitle) {
+
+                    ogTitle.setAttribute(
+                        "content",
+                        pageTitle
+                    );
+
+                }
+
+
+                const ogDescription =
+                    document.getElementById(
+                        "ogJobDescription"
+                    );
+
+                if (ogDescription) {
+
+                    ogDescription.setAttribute(
+                        "content",
+                        seoDescription
+                    );
+
+                }
+
+
+                const ogUrl =
+                    document.getElementById(
+                        "ogJobUrl"
+                    );
+
+                if (ogUrl) {
+
+                    ogUrl.setAttribute(
+                        "content",
+                        pageUrl
+                    );
+
+                }
+
+
+                const twitterTitle =
+                    document.getElementById(
+                        "twitterJobTitle"
+                    );
+
+                if (twitterTitle) {
+
+                    twitterTitle.setAttribute(
+                        "content",
+                        pageTitle
+                    );
+
+                }
+
+
+                const twitterDescription =
+                    document.getElementById(
+                        "twitterJobDescription"
+                    );
+
+                if (twitterDescription) {
+
+                    twitterDescription.setAttribute(
+                        "content",
+                        seoDescription
+                    );
+
+                }
+
+
+                const seoSummary =
+                    document.getElementById(
+                        "jobSeoSummary"
+                    );
+
+                if (seoSummary) {
+
+                    seoSummary.textContent =
+                        (
+                            title +
+                            (company
+                                ? " at " + company
+                                : "") +
+                            (location
+                                ? " in " + location
+                                : "") +
+                            " — " +
+                            (
+                                category ||
+                                "Job Opportunity"
+                            ) +
+                            ". " +
+                            (
+                                qualification
+                                    ? "Qualification: " +
+                                      qualification +
+                                      ". "
+                                    : ""
+                            ) +
+                            "Find complete job information and application details on JobsBhandar."
+                        );
 
                 }
 
             }
-        );
+            const jobId =
+            new URLSearchParams(
+                window.location.search
+            ).get("id");
 
-    </script>
 
-</body>
+        if (!jobId) {
 
-</html>
+            loading.style.display = "none";
+
+            errorBox.textContent =
+                "Job ID is missing. Please open the job from JobsBhandar.";
+
+            errorBox.style.display = "block";
+
+            return;
+
+        }
+
+
+        try {
+
+            const {
+                data: job,
+                error
+            } = await supabaseClient
+                .from("jobs")
+                .select("*")
+                .eq("id", jobId)
+                .maybeSingle();
+
+
+            if (error) {
+
+                console.error(
+                    "Job loading error:",
+                    error
+                );
+
+                throw error;
+
+            }
+
+
+            if (!job) {
+
+                loading.style.display = "none";
+
+                errorBox.textContent =
+                    "Job not found. The job may have been removed or the link may be incorrect.";
+
+                errorBox.style.display = "block";
+
+                return;
+
+            }
+
+
+            const categoryElement =
+                document.getElementById(
+                    "jobCategory"
+                );
+
+            if (categoryElement) {
+
+                categoryElement.textContent =
+                    cleanText(
+                        job.category
+                    ) ||
+                    "Job";
+
+            }
+
+
+            const titleElement =
+                document.getElementById(
+                    "jobTitle"
+                );
+
+            if (titleElement) {
+
+                titleElement.textContent =
+                    cleanText(
+                        job.title
+                    ) ||
+                    "Job Opportunity";
+
+            }
+
+
+            const companyElement =
+                document.getElementById(
+                    "jobCompany"
+                );
+
+            if (companyElement) {
+
+                companyElement.textContent =
+                    cleanText(
+                        job.company
+                    ) ||
+                    "Company";
+
+            }
+
+
+            const locationElement =
+                document.getElementById(
+                    "jobLocation"
+                );
+
+            if (locationElement) {
+
+                locationElement.textContent =
+                    cleanText(
+                        job.location
+                    ) ||
+                    "India";
+
+            }
+
+
+            const typeElement =
+                document.getElementById(
+                    "jobType"
+                );
+
+            if (typeElement) {
+
+                typeElement.textContent =
+                    cleanText(
+                        job.job_type
+                    ) ||
+                    "Not Specified";
+
+            }
+
+
+            const salaryElement =
+                document.getElementById(
+                    "jobSalary"
+                );
+
+            if (salaryElement) {
+
+                salaryElement.textContent =
+                    cleanText(
+                        job.salary
+                    ) ||
+                    "Not Specified";
+
+            }
+
+
+            const qualificationElement =
+                document.getElementById(
+                    "jobQualification"
+                );
+
+            if (qualificationElement) {
+
+                qualificationElement.textContent =
+                    cleanText(
+                        job.qualification
+                    ) ||
+                    "Not Specified";
+
+            }
+
+
+            const experienceElement =
+                document.getElementById(
+                    "jobExperience"
+                );
+
+            if (experienceElement) {
+
+                experienceElement.textContent =
+                    cleanText(
+                        job.experience
+                    ) ||
+                    "Not Specified";
+
+            }
+
+
+            const lastDateElement =
+                document.getElementById(
+                    "jobLastDate"
+                );
+
+            if (lastDateElement) {
+
+                const lastDate =
+                    getDateOnly(
+                        job.last_date
+                    );
+
+                if (lastDate) {
+
+                    const formattedDate =
+                        new Date(
+                            lastDate +
+                            "T00:00:00"
+                        ).toLocaleDateString(
+                            "en-IN",
+                            {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric"
+                            }
+                        );
+
+                    lastDateElement.textContent =
+                        formattedDate;
+
+                } else {
+
+                    lastDateElement.textContent =
+                        "Not Specified";
+
+                }
+
+            }
+
+
+            const descriptionElement =
+                document.getElementById(
+                    "jobDescription"
+                );
+
+            if (descriptionElement) {
+
+                descriptionElement.innerHTML =
+                    formatDescription(
+                        job.description
+                    );
+
+            }
+
+
+            const applyButton =
+                document.getElementById(
+                    "applyButton"
+                );
+
+
+            if (applyButton) {
+
+                const applyUrl =
+                    safeUrl(
+                        job.apply_link
+                    );
+
+
+                if (applyUrl) {
+
+                    applyButton.href =
+                        applyUrl;
+
+                    applyButton.target =
+                        "_blank";
+
+                    applyButton.rel =
+                        "noopener noreferrer";
+
+                    applyButton.style.display =
+                        "inline-flex";
+
+                    applyButton.removeAttribute(
+                        "aria-disabled"
+                    );
+
+                } else {
+
+                    applyButton.removeAttribute(
+                        "href"
+                    );
+
+                    applyButton.style.display =
+                        "none";
+
+                    applyButton.setAttribute(
+                        "aria-disabled",
+                        "true"
+                    );
+
+                }
+
+            }
+
+
+            updateSeo(job);
+
+            updateStructuredData(job);
+
+
+            if (jobSeoContent) {
+
+                jobSeoContent.style.display =
+                    "block";
+
+            }
+
+
+            if (jobKeywords) {
+
+                const keywordValues = [
+
+                    cleanText(
+                        job.title
+                    ),
+
+                    cleanText(
+                        job.company
+                    ),
+
+                    cleanText(
+                        job.category
+                    ),
+
+                    cleanText(
+                        job.location
+                    ),
+
+                    cleanText(
+                        job.qualification
+                    ),
+
+                    cleanText(
+                        job.job_type
+                    )
+
+                ].filter(Boolean);
+
+
+                const uniqueKeywords =
+                    [...new Set(
+                        keywordValues
+                    )];
+
+
+                jobKeywords.innerHTML =
+                    uniqueKeywords
+                        .map(
+                            keyword =>
+                                '<span class="job-keyword">' +
+                                escapeHtml(
+                                    keyword
+                                ) +
+                                "</span>"
+                        )
+                        .join("");
+
+            }
+
+
+            loading.style.display =
+                "none";
+
+            errorBox.style.display =
+                "none";
+
+            jobCard.style.display =
+                "block";
+
+
+        } catch (error) {
+
+            console.error(
+                "Unable to load job:",
+                error
+            );
+
+
+            loading.style.display =
+                "none";
+
+            jobCard.style.display =
+                "none";
+
+            errorBox.textContent =
+                "Unable to load this job right now. Please try again later.";
+
+            errorBox.style.display =
+                "block";
+
+        }
+
+    });
+
+</script>
