@@ -2720,7 +2720,11 @@ body {
   font-size: 13px;
   color: #94a3b8;
 }
-
+/* Privacy and Terms are hidden until opened from footer */
+#privacy,
+#terms {
+  display: none;
+}
 
 /* =====================================================
    MOBILE RESPONSIVE
