@@ -2337,7 +2337,41 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-client.js"></script>
 <script src="script.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
+    const privacy = document.getElementById("privacy");
+    const terms = document.getElementById("terms");
+
+    function showSection(section) {
+        if (privacy) privacy.style.display = "none";
+        if (terms) terms.style.display = "none";
+
+        if (section) {
+            section.style.display = "block";
+            section.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+    }
+
+    document.querySelectorAll('a[href="#privacy"]').forEach(function (link) {
+        link.addEventListener("click", function (e) {
+            e.preventDefault();
+            showSection(privacy);
+        });
+    });
+
+    document.querySelectorAll('a[href="#terms"]').forEach(function (link) {
+        link.addEventListener("click", function (e) {
+            e.preventDefault();
+            showSection(terms);
+        });
+    });
+
+});
+</script>
 </body>
 </html>
 
