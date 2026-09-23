@@ -1875,3 +1875,17 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+function openInfoSection(sectionId) {
+    const section = document.getElementById(sectionId);
+
+    if (!section) return;
+
+    section.classList.add("active");
+
+    setTimeout(() => {
+        section.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }, 50);
+}
