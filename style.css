@@ -2844,11 +2844,3 @@ body {
   #contact.page-section-active {
     display: block;
   }
-/* About section hidden by default */
-.about-info-section {
-    display: none !important;
-}
-
-.about-info-section.active {
-    display: block !important;
-}
