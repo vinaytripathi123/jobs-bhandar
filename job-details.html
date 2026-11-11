@@ -1204,15 +1204,17 @@
 
 
 
-                if (
-                    qualification
-                ) {
+               
+if (
+    qualification &&
+    !/not specified|not disclosed|n\/a|none/i.test(qualification)
+) {
 
-                    schema.qualifications =
-                        qualification;
+    schema.qualifications =
+        qualification;
 
-                }
-
+}
+                   
 
             if (experience) {
 
