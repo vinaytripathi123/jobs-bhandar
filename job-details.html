@@ -1201,32 +1201,7 @@
                 }
 
 
-                if (
-                    job.salary &&
-                    cleanText(job.salary)
-                ) {
 
-                    schema.baseSalary = {
-
-                        "@type":
-                            "MonetaryAmount",
-
-                        "currency":
-                            "INR",
-
-                        "value": {
-
-                            "@type":
-                                "QuantitativeValue",
-
-                            "description":
-                                salary
-
-                        }
-
-                    };
-
-                }
 
 
                 if (
