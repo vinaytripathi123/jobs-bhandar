@@ -1239,14 +1239,41 @@
                 }
 
 
-                if (
-                    experience
-                ) {
+            if (experience) {
 
-                    schema.experienceRequirements =
-                        experience;
+    const expMatch = experience.match(
+        /(\d+(?:\.\d+)?)\s*(?:-|–|to)\s*(\d+(?:\.\d+)?)\s*(years?|yrs?)/i
+    );
 
-                }
+    const singleExpMatch = experience.match(
+        /^(\d+(?:\.\d+)?)\s*(years?|yrs?)$/i
+    );
+
+    if (expMatch) {
+
+        schema.experienceRequirements = {
+
+            "@type": "OccupationalExperienceRequirements",
+
+            "monthsOfExperience":
+                Math.round(Number(expMatch[1]) * 12)
+
+        };
+
+    } else if (singleExpMatch) {
+
+        schema.experienceRequirements = {
+
+            "@type": "OccupationalExperienceRequirements",
+
+            "monthsOfExperience":
+                Math.round(Number(singleExpMatch[1]) * 12)
+
+        };
+
+    }
+
+}
 
 
                 if (
